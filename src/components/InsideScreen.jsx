@@ -18,7 +18,7 @@ export function InsideScreen({
       rank,
       id: `spot-${rank}`,
       screen: 'inside-left',
-      bidAmount: SPOT_BASE_PRICES[rank] || 50,
+      bidAmount: SPOT_BASE_PRICES[rank] || 1,
       brandName: null,
     };
   });
@@ -29,7 +29,7 @@ export function InsideScreen({
       rank,
       id: `spot-${rank}`,
       screen: 'inside-right',
-      bidAmount: SPOT_BASE_PRICES[rank] || 25,
+      bidAmount: SPOT_BASE_PRICES[rank] || 1,
       brandName: null,
     };
   });

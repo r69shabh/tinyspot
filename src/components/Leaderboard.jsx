@@ -43,7 +43,7 @@ export function Leaderboard({
             Leaderboard & Ranks
           </h2>
           <p className="mt-1 text-[14px] text-ink-2">
-            {claimedCount} spots claimed · {20 - Math.min(20, claimedCount)} open. Top 5 on outside screen ($50–$150). Ranks 6–20 on inside canvas ($10–$35).
+            {claimedCount} spots claimed · {20 - Math.min(20, claimedCount)} open. Outer screen starts at $5 · Inner canvas starts at $1 · Outbid step +$1.
           </p>
         </div>
 

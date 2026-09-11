@@ -13,7 +13,7 @@ test('Pricing Specs: 20 total spots defined', () => {
   }
 });
 
-test('Pricing Specs: Outside Screen (Top 5) starts between $50 and $150', () => {
+test('Pricing Specs: Outside Screen (Top 5) starts at $5 USD minimum', () => {
   const outsidePrices = [
     SPOT_BASE_PRICES[1],
     SPOT_BASE_PRICES[2],
@@ -21,16 +21,16 @@ test('Pricing Specs: Outside Screen (Top 5) starts between $50 and $150', () => 
     SPOT_BASE_PRICES[4],
     SPOT_BASE_PRICES[5],
   ];
-  assert.deepEqual(outsidePrices, [150, 110, 85, 65, 50]);
-  assert.equal(SPOT_BASE_PRICES[1], 150);
-  assert.equal(SPOT_BASE_PRICES[5], 50);
+  assert.deepEqual(outsidePrices, [5, 5, 5, 5, 5]);
+  assert.equal(SPOT_BASE_PRICES[1], 5);
+  assert.equal(SPOT_BASE_PRICES[5], 5);
 });
 
-test('Pricing Specs: Inside Screen (Ranks 6–20) accessible floors span $10 to $35', () => {
-  assert.equal(SPOT_BASE_PRICES[6], 35);
-  assert.equal(SPOT_BASE_PRICES[20], 10);
+test('Pricing Specs: Inside Screen (Ranks 6–20) accessible floor starts at $1 USD', () => {
+  assert.equal(SPOT_BASE_PRICES[6], 1);
+  assert.equal(SPOT_BASE_PRICES[20], 1);
   for (let r = 6; r <= 20; r++) {
-    assert.ok(SPOT_BASE_PRICES[r] >= 10 && SPOT_BASE_PRICES[r] <= 35);
+    assert.equal(SPOT_BASE_PRICES[r], 1);
   }
 });
 
@@ -99,18 +99,19 @@ test('Validation: Bid amount checking against base prices', () => {
   function validateBid(rank, amount) {
     const num = Number(amount);
     if (!num || isNaN(num) || num <= 0) return { valid: false, reason: 'Invalid amount' };
-    const minRequired = SPOT_BASE_PRICES[rank] || 20;
+    const minRequired = SPOT_BASE_PRICES[rank] || (rank <= 5 ? 5 : 1);
     if (num < minRequired) return { valid: false, reason: `Below minimum $${minRequired}` };
     return { valid: true };
   }
 
-  assert.equal(validateBid(1, 150).valid, true);
-  assert.equal(validateBid(1, 200).valid, true);
-  assert.equal(validateBid(1, 149).valid, false); // below $150
-  assert.equal(validateBid(20, 10).valid, true);
-  assert.equal(validateBid(20, 9).valid, false); // below $10
-  assert.equal(validateBid(5, 50).valid, true);
-  assert.equal(validateBid(5, 49).valid, false); // below $50
+  assert.equal(validateBid(1, 5).valid, true);
+  assert.equal(validateBid(1, 10).valid, true);
+  assert.equal(validateBid(1, 4).valid, false); // below $5 for outer
+  assert.equal(validateBid(5, 5).valid, true);
+  assert.equal(validateBid(5, 4.99).valid, false); // below $5
+  assert.equal(validateBid(6, 1).valid, true); // $1 for inner
+  assert.equal(validateBid(20, 1).valid, true);
+  assert.equal(validateBid(20, 0.5).valid, false); // below $1
   assert.equal(validateBid(5, -10).valid, false);
   assert.equal(validateBid(5, 0).valid, false);
 });

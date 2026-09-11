@@ -7,19 +7,19 @@ export function HowItWorks() {
       num: '1',
       title: 'Pick your spot & set your bid',
       icon: ShieldCheck,
-      desc: 'Claim any vacant spot starting from its base price, or outbid an existing sponsor by +$5 (₹500). Secure checkout powered by Dodo Payments with Cards, Apple Pay, Google Pay, and UPI.',
+      desc: 'Claim any spot starting from $1 ($5 minimum for the outer screen), or outbid an existing sponsor by +$1 (₹80). Secure checkout powered by Dodo Payments with Cards, Apple Pay, Google Pay, and UPI.',
     },
     {
       num: '2',
       title: 'Top 5 on the cover display',
       icon: Smartphone,
-      desc: 'Ranks #1–#5 command the high-frequency front screen ($50–$150). This is the display seen whenever the device is in hand or resting on a table. #1 earns the prominent hero billboard widget.',
+      desc: 'Ranks #1–#5 command the high-frequency front screen ($5 minimum). This is the display seen whenever the device is in hand or resting on a table. #1 earns the prominent hero billboard widget.',
     },
     {
       num: '3',
       title: '15 spots on the dual folding canvas',
       icon: Layers,
-      desc: 'Ranks #6–#20 secure spots ($10–$35) across the 7.6-inch unfolded inner OLED screen. 8 spots live on the left panel and 7 spots live on the right panel.',
+      desc: 'Ranks #6–#20 secure spots starting from just $1 across the 7.6-inch unfolded inner OLED screen. 8 spots live on the left panel and 7 spots live on the right panel.',
     },
     {
       num: '4',

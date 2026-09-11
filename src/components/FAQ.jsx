@@ -20,9 +20,9 @@ export function FAQ() {
       icon: Zap,
       category: 'Auction Mechanics',
       q: 'How does outbidding work, and what if someone takes my slot?',
-      summary: 'Starting from $10–$25 inside ($50 cover). Outbid by +$5 (+₹500) and sponsors gracefully shift down.',
+      summary: 'Starting from $1 inside ($5 outer screen). Outbid by +$1 (+₹80) and sponsors gracefully shift down.',
       detail:
-        'Any open spot can be claimed starting from accessible base floors ($10–$35 for inside canvas spots; $50–$150 for outside cover spots). If another sponsor wishes to take your specific rank, they must outbid you by at least $5 USD (₹500 INR). When that happens, you are not kicked off the board—your sponsor slot moves down to the next rank. You retain full link and logo presence, and you can reclaim your top position at any time by simply paying the difference.',
+        'Any open spot can be claimed starting from accessible base floors ($1 for inside canvas spots; $5 minimum for outside cover spots). If another sponsor wishes to take your specific rank, they must outbid you by at least $1 USD (₹80 INR). When that happens, you are not kicked off the board—your sponsor slot moves down to the next rank. You retain full link and logo presence, and you can reclaim your top position at any time by simply paying the difference.',
     },
     {
       id: 'perks',

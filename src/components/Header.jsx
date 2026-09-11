@@ -107,7 +107,7 @@ export function Header({
 
       {/* Description */}
       <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-ink-2 sm:text-[17px]">
-        An outbid auction for 20 permanent spots on the first folding iPhone Duo in India. The <span className="font-semibold text-ink">top 5 command the outside cover screen</span> ($50–$150). Ranks <span className="font-semibold text-ink">6–20 take the dual folding screen inside</span> ($10–$35).
+        An outbid auction for 20 permanent spots on Apple's first iPhone Duo in India. Claim a spot on the <span className="font-semibold text-ink">outer screen from $5</span>, or on the <span className="font-semibold text-ink">inner dual screen from $1</span>. Outbid anytime to climb the ranks.
       </p>
 
       {/* Real-world Visibility Badges */}

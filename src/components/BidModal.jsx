@@ -41,8 +41,8 @@ export function BidModal({
 
       const currentSpot = spots.find(s => s.rank === targetRank);
       const isOccupied = currentSpot && currentSpot.brandName;
-      const basePrice = SPOT_BASE_PRICES[targetRank] || 20;
-      const minRequired = isOccupied ? (currentSpot.bidAmount + 5) : basePrice;
+      const basePrice = SPOT_BASE_PRICES[targetRank] || (targetRank <= 5 ? 5 : 1);
+      const minRequired = isOccupied ? (currentSpot.bidAmount + 1) : basePrice;
       setBidAmountUSD(minRequired);
 
       if (!url) {
@@ -55,8 +55,8 @@ export function BidModal({
 
   const currentSpot = spots.find(s => s.rank === selectedRank);
   const isOccupied = currentSpot && Boolean(currentSpot.brandName);
-  const basePrice = SPOT_BASE_PRICES[selectedRank] || 20;
-  const minRequiredBidUSD = isOccupied ? (currentSpot.bidAmount + 5) : basePrice;
+  const basePrice = SPOT_BASE_PRICES[selectedRank] || (selectedRank <= 5 ? 5 : 1);
+  const minRequiredBidUSD = isOccupied ? (currentSpot.bidAmount + 1) : basePrice;
 
   // Auto-detect brand name & favicon from URL
   const handleUrlChange = (newUrl) => {
@@ -82,8 +82,8 @@ export function BidModal({
     setSelectedRank(r);
     const spot = spots.find(s => s.rank === r);
     const occupied = spot && spot.brandName;
-    const base = SPOT_BASE_PRICES[r] || 20;
-    const min = occupied ? (spot.bidAmount + 5) : base;
+    const base = SPOT_BASE_PRICES[r] || (r <= 5 ? 5 : 1);
+    const min = occupied ? (spot.bidAmount + 1) : base;
     setBidAmountUSD(min);
   };
 
@@ -310,24 +310,24 @@ export function BidModal({
               onChange={(e) => handleRankChange(e.target.value)}
               className="w-full rounded-xl border border-hairline bg-mist/40 px-3 py-2 text-[13px] font-semibold text-ink outline-none focus:border-ink focus:bg-white transition-all cursor-pointer"
             >
-              <optgroup label="Outside Screen (Premier Top 5)">
+              <optgroup label="Outside Screen (Premier Top 5 — Min $5)">
                 {[1, 2, 3, 4, 5].map(r => {
                   const s = spots.find(spot => spot.rank === r);
-                  const price = s?.brandName ? (s.bidAmount + 5) : (SPOT_BASE_PRICES[r] || 20);
+                  const price = s?.brandName ? (s.bidAmount + 1) : (SPOT_BASE_PRICES[r] || 5);
                   return (
                     <option key={r} value={r}>
-                      Spot #{r} — {s?.brandName ? `Outbid ${s.brandName} from $${price}` : `Vacant (Base: $${price})`}
+                      Spot #{r} — {s?.brandName ? `Outbid ${s.brandName} from $${price}` : `Vacant (From $${price})`}
                     </option>
                   );
                 })}
               </optgroup>
-              <optgroup label="Inside Screen (Ranks 6–20)">
+              <optgroup label="Inside Screen (Ranks 6–20 — Min $1)">
                 {[6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map(r => {
                   const s = spots.find(spot => spot.rank === r);
-                  const price = s?.brandName ? (s.bidAmount + 5) : (SPOT_BASE_PRICES[r] || 20);
+                  const price = s?.brandName ? (s.bidAmount + 1) : (SPOT_BASE_PRICES[r] || 1);
                   return (
                     <option key={r} value={r}>
-                      Spot #{r} — {s?.brandName ? `Outbid ${s.brandName} from $${price}` : `Vacant (Base: $${price})`}
+                      Spot #{r} — {s?.brandName ? `Outbid ${s.brandName} from $${price}` : `Vacant (From $${price})`}
                     </option>
                   );
                 })}
@@ -452,7 +452,7 @@ export function BidModal({
               <input
                 type="number"
                 min={inputCurrency === 'INR' ? usdToInr(minRequiredBidUSD) : minRequiredBidUSD}
-                step={inputCurrency === 'INR' ? 500 : 5}
+                step={inputCurrency === 'INR' ? 80 : 1}
                 value={inputCurrency === 'INR' ? usdToInr(bidAmountUSD) : bidAmountUSD}
                 onChange={(e) => {
                   const val = Number(e.target.value);
@@ -476,8 +476,8 @@ export function BidModal({
             <div className="mt-2 flex items-center gap-1.5">
               <span className="text-[10px] uppercase font-bold text-ink-2 mr-1">Add:</span>
               {(inputCurrency === 'INR'
-                ? [500, 2000, 5000, 10000]
-                : [5, 25, 50, 100]
+                ? [80, 400, 1000, 2500]
+                : [1, 5, 10, 25]
               ).map(bump => (
                 <button
                   key={bump}
@@ -498,8 +498,8 @@ export function BidModal({
             </div>
 
             <div className="mt-2 text-[10px] text-ink-2 flex justify-between items-center">
-              <span>Starts from base: <strong>${minRequiredBidUSD} USD</strong> (₹{usdToInr(minRequiredBidUSD).toLocaleString()})</span>
-              <span className="text-emerald-700 font-medium">Min step: +$5 / +₹500</span>
+              <span>Starts from: <strong>${minRequiredBidUSD} USD</strong> (₹{usdToInr(minRequiredBidUSD).toLocaleString()})</span>
+              <span className="text-emerald-700 font-medium">Min outbid: +$1 / +₹80</span>
             </div>
           </div>
 

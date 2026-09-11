@@ -10,11 +10,11 @@ export function OutsideScreen({
   onClaim,
   showFullDevice = true,
 }) {
-  const spot1 = spots.find(s => s.rank === 1) || { rank: 1, id: 'spot-1', bidAmount: SPOT_BASE_PRICES[1] || 150 };
-  const spot2 = spots.find(s => s.rank === 2) || { rank: 2, id: 'spot-2', bidAmount: SPOT_BASE_PRICES[2] || 110 };
-  const spot3 = spots.find(s => s.rank === 3) || { rank: 3, id: 'spot-3', bidAmount: SPOT_BASE_PRICES[3] || 85 };
-  const spot4 = spots.find(s => s.rank === 4) || { rank: 4, id: 'spot-4', bidAmount: SPOT_BASE_PRICES[4] || 65 };
-  const spot5 = spots.find(s => s.rank === 5) || { rank: 5, id: 'spot-5', bidAmount: SPOT_BASE_PRICES[5] || 50 };
+  const spot1 = spots.find(s => s.rank === 1) || { rank: 1, id: 'spot-1', bidAmount: SPOT_BASE_PRICES[1] || 5 };
+  const spot2 = spots.find(s => s.rank === 2) || { rank: 2, id: 'spot-2', bidAmount: SPOT_BASE_PRICES[2] || 5 };
+  const spot3 = spots.find(s => s.rank === 3) || { rank: 3, id: 'spot-3', bidAmount: SPOT_BASE_PRICES[3] || 5 };
+  const spot4 = spots.find(s => s.rank === 4) || { rank: 4, id: 'spot-4', bidAmount: SPOT_BASE_PRICES[4] || 5 };
+  const spot5 = spots.find(s => s.rank === 5) || { rank: 5, id: 'spot-5', bidAmount: SPOT_BASE_PRICES[5] || 5 };
 
   // If showing full device (ceramic back on left + cover screen on right)
   if (showFullDevice) {

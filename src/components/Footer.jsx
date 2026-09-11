@@ -110,11 +110,11 @@ export function Footer({
                 </div>
                 <div className="flex justify-between items-center py-1 border-b border-hairline/40">
                   <dt className="text-ink-2">Outside Cover Slots</dt>
-                  <dd className="font-semibold text-ink">Top 5 Spots ($50–$150)</dd>
+                  <dd className="font-semibold text-ink">Top 5 Spots ($5 min)</dd>
                 </div>
                 <div className="flex justify-between items-center py-1 border-b border-hairline/40">
                   <dt className="text-ink-2">Inside Canvas Slots</dt>
-                  <dd className="font-semibold text-ink">15 Spots ($10–$35)</dd>
+                  <dd className="font-semibold text-ink">15 Spots ($1 min)</dd>
                 </div>
                 <div className="flex justify-between items-center py-1 border-b border-hairline/40">
                   <dt className="text-ink-2">Daily Live Audience</dt>
