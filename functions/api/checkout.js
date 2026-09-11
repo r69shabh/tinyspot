@@ -19,9 +19,10 @@ export async function onRequestPost(context) {
 
   try {
     const body = await request.json().catch(() => ({}));
-    const { rank, brandName, url, tagline, bidAmountUSD, logoBg, logoText, logoUrl, returnUrl } = body;
+    const { rank, brandName, name, url, tagline, bidAmountUSD, amountUSD, amount: rawAmount, logoBg, logoText, logoUrl, returnUrl } = body;
 
-    const amount = Number(bidAmountUSD);
+    const resolvedBrand = brandName || name || '';
+    const amount = Number(bidAmountUSD || amountUSD || rawAmount);
     if (!amount || amount <= 0) {
       return new Response(JSON.stringify({ error: 'Valid bid amount is required' }), {
         status: 400,
@@ -37,7 +38,7 @@ export async function onRequestPost(context) {
       : 'https://test.dodopayments.com/checkouts';
 
     const origin = new URL(request.url).origin;
-    const finalReturnUrl = returnUrl || `${origin}/?success=true&rank=${rank}&brand=${encodeURIComponent(brandName || '')}`;
+    const finalReturnUrl = returnUrl || `${origin}/?success=true&rank=${rank}&brand=${encodeURIComponent(resolvedBrand)}`;
 
     // Product 'pdt_0Nm5UYjiECVXnZNzh0a2X' unit price is $1.00 USD, quantity = amount
     const dodoPayload = {
@@ -50,7 +51,7 @@ export async function onRequestPost(context) {
       return_url: finalReturnUrl,
       metadata: {
         rank: String(rank),
-        brandName: String(brandName || ''),
+        brandName: String(resolvedBrand),
         url: String(url || ''),
         tagline: String(tagline || ''),
       },
@@ -87,12 +88,12 @@ export async function onRequestPost(context) {
         ).bind(
           dodoData.session_id,
           Number(rank),
-          String(brandName || ''),
+          String(resolvedBrand),
           String(url || ''),
           String(tagline || ''),
           amount,
           logoBg || '#1d1d1f',
-          logoText || String(brandName || '').slice(0, 2),
+          logoText || String(resolvedBrand).slice(0, 2),
           logoUrl || null
         ).run();
       } catch (dbErr) {
