@@ -56,9 +56,9 @@ export function FAQ() {
       icon: Mail,
       category: 'Direct Support',
       q: 'Can I change my destination URL, logo, or copy after purchasing?',
-      summary: 'Yes. Direct founder support at connect@r69shabh.me with under 12-hour turnaround.',
+      summary: 'Yes. Direct founder support at connect@r69shabh.me or via DM to @r69shabh on X with under 12-hour turnaround.',
       detail:
-        'You are not locked into your original submission. If you rebrand, launch a new feature, or need to change your URL or logo, simply email Rishabh at connect@r69shabh.me from the email used during checkout. Your changes will be verified and deployed live.',
+        'You are not locked into your original submission. If you rebrand, launch a new feature, or need to change your URL or logo, simply email Rishabh at connect@r69shabh.me or message on X (@r69shabh) or GitHub (r69shabh). Your changes will be verified and deployed live to the edge.',
     },
   ];
 
