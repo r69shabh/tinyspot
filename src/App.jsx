@@ -7,60 +7,72 @@ import { HowItWorks } from './components/HowItWorks';
 import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
 import { BidModal } from './components/BidModal';
-import { INITIAL_SPONSORS, INITIAL_ACTIVITY } from './data/initialBoard';
+import { createEmptyBoard, SPOT_BASE_PRICES } from './data/initialBoard';
 import confetti from 'canvas-confetti';
 import { playSuccessChime } from './utils/audio';
 
-const STORAGE_KEY_SPOTS = 'tinyspot_sponsors_v2';
-const STORAGE_KEY_ACTIVITY = 'tinyspot_activity_v2';
-const STORAGE_KEY_CURRENCY = 'tinyspot_currency_v2';
+const STORAGE_KEY_CURRENCY = 'tinyspot_currency_v3';
 
 export function App() {
-  const [spots, setSpots] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY_SPOTS);
-      if (saved) return JSON.parse(saved);
-    } catch (e) {}
-    return INITIAL_SPONSORS;
-  });
-
-  const [activity, setActivity] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY_ACTIVITY);
-      if (saved) return JSON.parse(saved);
-    } catch (e) {}
-    return INITIAL_ACTIVITY;
-  });
-
+  const [spots, setSpots] = useState(createEmptyBoard());
+  const [activity, setActivity] = useState([]);
   const [currency, setCurrency] = useState(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY_CURRENCY);
-      if (saved) return saved;
-    } catch (e) {}
-    return 'USD';
+      return localStorage.getItem(STORAGE_KEY_CURRENCY) || 'USD';
+    } catch (e) {
+      return 'USD';
+    }
   });
 
   const [isBidModalOpen, setIsBidModalOpen] = useState(false);
   const [selectedSpotForClaim, setSelectedSpotForClaim] = useState(null);
 
-  // Sync to localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY_SPOTS, JSON.stringify(spots));
-    } catch (e) {}
-  }, [spots]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY_ACTIVITY, JSON.stringify(activity));
-    } catch (e) {}
-  }, [activity]);
-
+  // Sync currency to localStorage
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY_CURRENCY, currency);
     } catch (e) {}
   }, [currency]);
+
+  // Load spots and activity from Cloudflare D1 database API
+  const fetchD1State = async () => {
+    try {
+      const res = await fetch('/api/spots');
+      if (res.ok) {
+        const data = await res.json();
+        const claimedSpots = data.spots || [];
+        
+        // Merge claimed spots from D1 with empty board template
+        const baseBoard = createEmptyBoard();
+        const mergedBoard = baseBoard.map(slot => {
+          const claimed = claimedSpots.find(cs => cs.rank === slot.rank);
+          if (claimed) {
+            return {
+              ...slot,
+              brandName: claimed.brand_name,
+              url: claimed.url,
+              tagline: claimed.tagline,
+              bidAmount: claimed.bid_amount_usd,
+              logoBg: claimed.logo_bg,
+              logoText: claimed.logo_text,
+              logoUrl: claimed.logo_url,
+              claimedAt: claimed.claimed_at,
+            };
+          }
+          return slot;
+        });
+
+        setSpots(mergedBoard);
+        setActivity(data.activity || []);
+      }
+    } catch (e) {
+      console.warn('Could not fetch D1 spots:', e.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchD1State();
+  }, []);
 
   // Handle return redirect from Dodo Payments checkout
   useEffect(() => {
@@ -77,16 +89,18 @@ export function App() {
             confetti({ particleCount: 100, spread: 80, origin: { y: 0.5 } });
           }
         } catch (e) {}
-        // Clean URL
         window.history.replaceState({}, document.title, window.location.pathname);
       }
     }
   }, []);
 
-  // Calculate total amount raised in USD
-  const totalRaisedUSD = spots.reduce((sum, s) => sum + (s.bidAmount || 0), 0);
+  // Calculate total amount raised from claimed spots only
+  const totalRaisedUSD = spots
+    .filter(s => Boolean(s.brandName))
+    .reduce((sum, s) => sum + (s.bidAmount || 0), 0);
 
-  // Open modal for a specific spot or general CTA
+  const claimedBiddersCount = spots.filter(s => Boolean(s.brandName)).length;
+
   const handleClaimSpot = (spot) => {
     setSelectedSpotForClaim(spot);
     setIsBidModalOpen(true);
@@ -97,72 +111,75 @@ export function App() {
     setIsBidModalOpen(true);
   };
 
-  // Process a new bid or outbid
-  const handleConfirmBid = (bidData) => {
-    const targetRank = bidData.rank;
+  // Commit bid to D1 database
+  const handleConfirmBid = async (bidData) => {
+    const targetRank = Number(bidData.rank);
+    const amountUSD = Number(bidData.bidAmount || bidData.bidAmountUSD);
 
-    // Create the new sponsor entry
-    const newSponsor = {
-      id: `spot-${Date.now()}`,
-      rank: targetRank,
-      screen: targetRank <= 5 ? 'outside' : (targetRank <= 13 ? 'inside-left' : (targetRank <= 20 ? 'inside-right' : 'waitlist')),
-      brandName: bidData.brandName,
-      url: bidData.url,
-      tagline: bidData.tagline,
-      bidAmount: Number(bidData.bidAmount),
-      logoBg: bidData.logoBg,
-      logoText: bidData.logoText,
-      claimedAt: Date.now(),
-    };
+    try {
+      const res = await fetch('/api/claim', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          rank: targetRank,
+          brandName: bidData.brandName,
+          url: bidData.url,
+          tagline: bidData.tagline,
+          bidAmountUSD: amountUSD,
+          logoBg: bidData.logoBg,
+          logoText: bidData.logoText,
+          logoUrl: bidData.logoUrl,
+        }),
+      });
 
-    // Shift all existing sponsors at targetRank and below down by 1
-    const updatedSpots = [];
-    let placed = false;
-
-    const currentSorted = [...spots].sort((a, b) => a.rank - b.rank);
-
-    for (const s of currentSorted) {
-      if (s.rank < targetRank) {
-        updatedSpots.push(s);
-      } else {
-        if (!placed) {
-          updatedSpots.push(newSponsor);
-          placed = true;
-        }
-        const newRank = s.rank + 1;
-        updatedSpots.push({
-          ...s,
-          rank: newRank,
-          screen: newRank <= 5 ? 'outside' : (newRank <= 13 ? 'inside-left' : (newRank <= 20 ? 'inside-right' : 'waitlist')),
-        });
+      if (res.ok) {
+        await fetchD1State();
+        return;
       }
+    } catch (e) {
+      console.warn('D1 claim call failed, updating local state:', e.message);
     }
 
-    if (!placed) {
-      updatedSpots.push(newSponsor);
-    }
+    // Local state fallback if offline
+    setSpots(prevSpots => {
+      return prevSpots.map(s => {
+        if (s.rank === targetRank) {
+          return {
+            ...s,
+            brandName: bidData.brandName,
+            url: bidData.url,
+            tagline: bidData.tagline,
+            bidAmount: amountUSD,
+            logoBg: bidData.logoBg,
+            logoText: bidData.logoText,
+            logoUrl: bidData.logoUrl,
+            claimedAt: new Date().toISOString(),
+          };
+        }
+        return s;
+      });
+    });
 
-    setSpots(updatedSpots);
-
-    // Add entry to activity
-    const newActivityItem = {
-      id: `act-${Date.now()}`,
-      type: bidData.previousBrandName ? 'outbid' : 'claim',
-      brandName: bidData.brandName,
-      previousBrandName: bidData.previousBrandName,
-      rank: targetRank,
-      amount: bidData.bidAmount,
-      timestamp: Date.now(),
-    };
-    setActivity(prev => [newActivityItem, ...prev.slice(0, 19)]);
+    setActivity(prev => [
+      {
+        id: `act_${Date.now()}`,
+        type: 'claim',
+        rank: targetRank,
+        brand_name: bidData.brandName,
+        amount_usd: amountUSD,
+        created_at: new Date().toISOString(),
+      },
+      ...prev
+    ]);
   };
 
-  // Reset to default sample data
-  const handleResetBoard = () => {
-    localStorage.removeItem(STORAGE_KEY_SPOTS);
-    localStorage.removeItem(STORAGE_KEY_ACTIVITY);
-    setSpots(INITIAL_SPONSORS);
-    setActivity(INITIAL_ACTIVITY);
+  // Reset database back to pure 0 state
+  const handleResetBoard = async () => {
+    try {
+      await fetch('/api/reset', { method: 'POST' });
+    } catch (e) {}
+    setSpots(createEmptyBoard());
+    setActivity([]);
   };
 
   return (
@@ -172,16 +189,16 @@ export function App() {
         totalRaisedUSD={totalRaisedUSD}
         currency={currency}
         onToggleCurrency={setCurrency}
-        biddersCount={spots.length}
+        biddersCount={claimedBiddersCount}
       />
 
-      {/* Live Activity Ticker */}
+      {/* Live Activity Ticker (only renders when there is activity) */}
       <ActivityTicker
         activity={activity}
         currency={currency}
       />
 
-      {/* Main Interactive Phone Showcase with Outside & Inside Screens */}
+      {/* Main Interactive Phone Showcase with Real CAD Renders */}
       <PhoneShowcase
         spots={spots}
         currency={currency}
@@ -189,7 +206,7 @@ export function App() {
         onOpenBidModal={handleOpenGeneralBid}
       />
 
-      {/* Leaderboard Table */}
+      {/* Leaderboard Table (Shows all 20 spots, vacant and claimed) */}
       <Leaderboard
         spots={spots}
         currency={currency}
@@ -204,11 +221,11 @@ export function App() {
 
       {/* Footer */}
       <Footer
-        biddersCount={spots.length}
+        biddersCount={claimedBiddersCount}
         onResetBoard={handleResetBoard}
       />
 
-      {/* Dodo Payments Outbid & Claim Modal */}
+      {/* Dodo Payments Outbid & Claim Modal with Proper Form */}
       <BidModal
         isOpen={isBidModalOpen}
         onClose={() => setIsBidModalOpen(false)}

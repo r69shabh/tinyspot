@@ -1,14 +1,14 @@
 import React from 'react';
 import { TARGET_PRICE_USD, TARGET_PRICE_INR } from '../data/initialBoard';
 import { formatPrice } from '../utils/currency';
-import { Sparkles, ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import { playClick } from '../utils/audio';
 
 export function Header({
   totalRaisedUSD = 0,
   currency = 'USD',
   onToggleCurrency,
-  biddersCount = 20,
+  biddersCount = 0,
 }) {
   const percentage = Math.min(100, Math.round((totalRaisedUSD / TARGET_PRICE_USD) * 100));
 
@@ -25,7 +25,6 @@ export function Header({
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Dodo Payments Pill */}
           <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-orange-50 px-2 py-0.5 text-[10px] font-semibold text-orange-700 border border-orange-200">
             <ShieldCheck className="h-3 w-3 text-orange-600" />
             Dodo Payments
@@ -62,7 +61,7 @@ export function Header({
       {/* Live status badge */}
       <p className="text-[12px] text-ink-2 sm:text-[13px] font-medium">
         <span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-emerald-500 align-middle live-indicator"></span>
-        Live board · {biddersCount} sponsors ranked · min {currency === 'USD' ? '$5' : '₹500'} between ranks
+        Live board · {biddersCount} claimed · {20 - Math.min(20, biddersCount)} spots open
       </p>
 
       {/* Main Headline */}
@@ -72,7 +71,7 @@ export function Header({
 
       {/* Description */}
       <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-ink-2 sm:text-[17px]">
-        Pay to rank. The <span className="font-semibold text-ink">top 5 sit on the outside screen</span> ($290–$780). Ranks <span className="font-semibold text-ink">6–20 sit on the inside screen</span> ($20–$160). Everyone else stays on the list.
+        Pay to rank. The <span className="font-semibold text-ink">top 5 sit on the outside screen</span> ($290–$780). Ranks <span className="font-semibold text-ink">6–20 sit on the inside screen</span> ($20–$160).
       </p>
 
       {/* Goal & Funding Progress Box */}
@@ -105,7 +104,7 @@ export function Header({
         <div className="mt-2.5 flex items-center justify-between text-[11px] text-ink-2">
           <span>Target: iPhone Fold India Price (₹2,99,900 ≈ $3,600)</span>
           <span className="font-medium text-ink">
-            {totalRaisedUSD >= TARGET_PRICE_USD ? 'Goal reached! 🎉' : `${formatPrice(TARGET_PRICE_USD - totalRaisedUSD, currency)} to go`}
+            {totalRaisedUSD >= TARGET_PRICE_USD ? 'Goal reached! 🎉' : `${formatPrice(TARGET_PRICE_USD - totalRaisedUSD, currency)} remaining`}
           </span>
         </div>
       </div>

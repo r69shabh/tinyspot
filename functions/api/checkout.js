@@ -19,7 +19,7 @@ export async function onRequestPost(context) {
 
   try {
     const body = await request.json().catch(() => ({}));
-    const { rank, brandName, url, tagline, bidAmountUSD, returnUrl } = body;
+    const { rank, brandName, url, tagline, bidAmountUSD, logoBg, logoText, logoUrl, returnUrl } = body;
 
     const amount = Number(bidAmountUSD);
     if (!amount || amount <= 0) {
@@ -29,7 +29,6 @@ export async function onRequestPost(context) {
       });
     }
 
-    // Use API key provided by user or environment variable
     const apiKey = env?.DODO_PAYMENTS_API_KEY || '0sBurbjtawrdLcLg.Q9oitL5QLFBaz4AnTfcZnccjANGl6Cj0iCGIG-T2wLUTA6vF';
     const productId = env?.DODO_PRODUCT_ID || 'pdt_0Nm5UYjiECVXnZNzh0a2X';
     const isLive = env?.DODO_PAYMENTS_MODE === 'live';
@@ -40,8 +39,7 @@ export async function onRequestPost(context) {
     const origin = new URL(request.url).origin;
     const finalReturnUrl = returnUrl || `${origin}/?success=true&rank=${rank}&brand=${encodeURIComponent(brandName || '')}`;
 
-    // Create Dodo Payments checkout session
-    // Product 'pdt_0Nm5UYjiECVXnZNzh0a2X' has $1.00 unit price, quantity = amount
+    // Product 'pdt_0Nm5UYjiECVXnZNzh0a2X' unit price is $1.00 USD, quantity = amount
     const dodoPayload = {
       product_cart: [
         {
@@ -72,12 +70,34 @@ export async function onRequestPost(context) {
     if (!dodoRes.ok) {
       console.error('Dodo Payments API error:', dodoData);
       return new Response(JSON.stringify({
-        error: dodoData.message || dodoData.error || 'Failed to create checkout session with Dodo Payments',
+        error: dodoData.message || dodoData.error || 'Failed to create Dodo Payments checkout',
         details: dodoData,
       }), {
         status: dodoRes.status,
         headers: corsHeaders,
       });
+    }
+
+    // Save pending checkout session in D1 if available
+    if (env?.DB && dodoData.session_id) {
+      try {
+        await env.DB.prepare(
+          `INSERT OR REPLACE INTO checkout_sessions (session_id, rank, brand_name, url, tagline, bid_amount_usd, logo_bg, logo_text, logo_url, status)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')`
+        ).bind(
+          dodoData.session_id,
+          Number(rank),
+          String(brandName || ''),
+          String(url || ''),
+          String(tagline || ''),
+          amount,
+          logoBg || '#1d1d1f',
+          logoText || String(brandName || '').slice(0, 2),
+          logoUrl || null
+        ).run();
+      } catch (dbErr) {
+        console.warn('DB session log warning:', dbErr.message);
+      }
     }
 
     return new Response(JSON.stringify({

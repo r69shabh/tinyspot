@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { OutsideScreen } from './OutsideScreen';
 import { InsideScreen } from './InsideScreen';
-import { Layers, Smartphone, Sparkles, Image as ImageIcon, ArrowUpRight } from 'lucide-react';
+import { Layers, Smartphone, Sparkles, ArrowUpRight } from 'lucide-react';
 import { playClick } from '../utils/audio';
 
 export function PhoneShowcase({
   spots = [],
-  currency = 'INR',
+  currency = 'USD',
   onClaim,
   onOpenBidModal,
 }) {
-  const [view, setView] = useState('dual'); // 'dual' | 'outside' | 'inside' | 'concept'
+  const [view, setView] = useState('dual'); // 'dual' | 'outside' | 'inside'
   const [mode, setMode] = useState('live'); // 'live' | 'final'
+  const [coverMode, setCoverMode] = useState('full'); // 'full' (with back) | 'cover' (folded)
 
   const handleViewChange = (v) => {
     playClick();
@@ -22,6 +23,8 @@ export function PhoneShowcase({
     playClick();
     setMode(m);
   };
+
+  const claimedCount = spots.filter(s => s.brandName).length;
 
   return (
     <section className="mx-auto max-w-6xl px-4 sm:px-6 pt-4 pb-12">
@@ -65,22 +68,33 @@ export function PhoneShowcase({
             <Layers className="h-3.5 w-3.5 text-indigo-500" />
             <span>Inside Screen (Ranks 6–20)</span>
           </button>
-          <button
-            type="button"
-            onClick={() => handleViewChange('concept')}
-            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 transition-all ${
-              view === 'concept'
-                ? 'bg-white text-ink shadow-sm font-semibold'
-                : 'text-ink-2 hover:text-ink'
-            }`}
-          >
-            <ImageIcon className="h-3.5 w-3.5 text-amber-500" />
-            <span>CAD Concept</span>
-          </button>
         </div>
 
         {/* Right: Board Mode Selector (Live Board vs Final Look) */}
         <div className="flex items-center gap-3 self-end sm:self-auto">
+          {view === 'outside' && (
+            <div className="flex rounded-full bg-mist p-0.5 text-[11px] font-medium border border-hairline/60">
+              <button
+                type="button"
+                onClick={() => setCoverMode('full')}
+                className={`rounded-full px-2.5 py-0.5 transition-all ${
+                  coverMode === 'full' ? 'bg-white text-ink shadow-xs font-semibold' : 'text-ink-2'
+                }`}
+              >
+                Flat Device
+              </button>
+              <button
+                type="button"
+                onClick={() => setCoverMode('cover')}
+                className={`rounded-full px-2.5 py-0.5 transition-all ${
+                  coverMode === 'cover' ? 'bg-white text-ink shadow-xs font-semibold' : 'text-ink-2'
+                }`}
+              >
+                Closed Front
+              </button>
+            </div>
+          )}
+
           <div className="flex rounded-full bg-mist p-1 text-[12px] font-medium border border-hairline/60">
             <button
               type="button"
@@ -110,10 +124,10 @@ export function PhoneShowcase({
 
       {/* Helper caption */}
       <p className="mb-6 text-center text-[13px] text-ink-2">
-        {mode === 'live' ? (
-          <span>Hover a rank to take it · Click any logo to visit their site</span>
+        {claimedCount === 0 ? (
+          <span>Board is live · Click any vacant spot (+) or use the button below to claim a spot</span>
         ) : (
-          <span>Final look · logos and widgets sit directly on the iPhone Fold</span>
+          <span>Hover a rank to take it · Click any logo to visit their site</span>
         )}
       </p>
 
@@ -121,31 +135,32 @@ export function PhoneShowcase({
       <div className="relative">
         {view === 'dual' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center justify-center">
-            {/* Outside Screen (Left col, takes 4.5 cols) */}
-            <div className="lg:col-span-4 flex flex-col items-center">
+            {/* Outside Screen (Left, takes 5 cols) */}
+            <div className="lg:col-span-5 flex flex-col items-center">
               <div className="mb-2 text-center">
                 <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-ink">
                   <Smartphone className="h-3.5 w-3.5 text-emerald-600" />
                   Outside Screen (Top 5)
                 </span>
-                <p className="text-[11px] text-ink-2">Premier visibility when phone is closed</p>
+                <p className="text-[11px] text-ink-2">High price tier ($290–$780) · Maximum daily glanceability</p>
               </div>
               <OutsideScreen
                 spots={spots}
                 mode={mode}
                 currency={currency}
                 onClaim={onClaim}
+                showFullDevice={true}
               />
             </div>
 
-            {/* Inside Screen (Right col, takes 7.5 cols) */}
-            <div className="lg:col-span-8 flex flex-col items-center">
+            {/* Inside Screen (Right, takes 7 cols) */}
+            <div className="lg:col-span-7 flex flex-col items-center">
               <div className="mb-2 text-center">
                 <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-ink">
                   <Layers className="h-3.5 w-3.5 text-indigo-600" />
-                  Inside Unfolded Screen (Ranks 6–20)
+                  Inside Screen (Ranks 6–20)
                 </span>
-                <p className="text-[11px] text-ink-2">15 spots across dual folding panels</p>
+                <p className="text-[11px] text-ink-2">15 spots ($20–$160) across dual folding canvas</p>
               </div>
               <InsideScreen
                 spots={spots}
@@ -164,6 +179,7 @@ export function PhoneShowcase({
               mode={mode}
               currency={currency}
               onClaim={onClaim}
+              showFullDevice={coverMode === 'full'}
             />
           </div>
         )}
@@ -178,36 +194,9 @@ export function PhoneShowcase({
             />
           </div>
         )}
-
-        {view === 'concept' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-            <div className="rounded-3xl border border-hairline bg-mist/60 p-5 text-center shadow-sm">
-              <img
-                src="/iphone-fold-flat.png"
-                alt="Original concept render: Flat device view"
-                className="mx-auto rounded-2xl max-h-[260px] object-contain shadow-sm"
-              />
-              <h4 className="mt-4 text-[14px] font-semibold text-ink">Flat CAD Concept (Back & Cover Screen)</h4>
-              <p className="mt-1 text-[12px] text-ink-2">
-                White ceramic chassis, dual-camera visor on rear, outer cover display on front right.
-              </p>
-            </div>
-            <div className="rounded-3xl border border-hairline bg-mist/60 p-5 text-center shadow-sm">
-              <img
-                src="/iphone-fold-angled.png"
-                alt="Original concept render: Angled folding screen"
-                className="mx-auto rounded-2xl max-h-[260px] object-contain shadow-sm"
-              />
-              <h4 className="mt-4 text-[14px] font-semibold text-ink">Angled Hinge Perspective</h4>
-              <p className="mt-1 text-[12px] text-ink-2">
-                Book-style fold mechanism showing inner OLED folding display at 120° posture.
-              </p>
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* Primary CTA button under render */}
+      {/* Primary CTA */}
       <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
         <button
           type="button"
@@ -215,9 +204,9 @@ export function PhoneShowcase({
             playClick();
             onOpenBidModal();
           }}
-          className="group flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-[14px] font-semibold text-white shadow-lg transition-all duration-200 hover:bg-black hover:scale-[1.02] active:scale-[0.98]"
+          className="group flex items-center gap-2 rounded-full bg-orange-600 px-7 py-3.5 text-[15px] font-bold text-white shadow-lg transition-all duration-200 hover:bg-orange-700 hover:scale-[1.02] active:scale-[0.98]"
         >
-          <span>Get on the board</span>
+          <span>Claim a Spot on the Fold</span>
           <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </button>
         <a

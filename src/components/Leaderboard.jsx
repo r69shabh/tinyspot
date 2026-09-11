@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ExternalLink, Search, Trophy, Smartphone, Layers, ArrowUpRight } from 'lucide-react';
+import { ExternalLink, Search, Trophy, Smartphone, Layers, Plus } from 'lucide-react';
 import { formatPrice } from '../utils/currency';
 import { playClick } from '../utils/audio';
+import { SPOT_BASE_PRICES } from '../data/initialBoard';
 
 export function Leaderboard({
   spots = [],
@@ -9,13 +10,14 @@ export function Leaderboard({
   onClaimSpot,
 }) {
   const [search, setSearch] = useState('');
-  const [filter, setFilter] = useState('all'); // 'all' | 'outside' | 'inside' | 'waitlist'
+  const [filter, setFilter] = useState('all'); // 'all' | 'outside' | 'inside' | 'claimed' | 'vacant'
 
   const filteredSpots = spots
     .filter(spot => {
       if (filter === 'outside') return spot.rank <= 5;
       if (filter === 'inside') return spot.rank > 5 && spot.rank <= 20;
-      if (filter === 'waitlist') return spot.rank > 20;
+      if (filter === 'claimed') return Boolean(spot.brandName);
+      if (filter === 'vacant') return !spot.brandName;
       return true;
     })
     .filter(spot => {
@@ -28,6 +30,8 @@ export function Leaderboard({
       );
     });
 
+  const claimedCount = spots.filter(s => s.brandName).length;
+
   return (
     <section id="leaderboard" className="mx-auto max-w-5xl px-6 py-12">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-8">
@@ -39,7 +43,7 @@ export function Leaderboard({
             Leaderboard & Ranks
           </h2>
           <p className="mt-1 text-[14px] text-ink-2">
-            Top 5 on outside cover screen ($290–$780). Ranks 6–20 on inside canvas ($20–$160).
+            {claimedCount} spots claimed · {20 - Math.min(20, claimedCount)} open. Top 5 on outside screen ($290–$780). Ranks 6–20 on inside canvas ($20–$160).
           </p>
         </div>
 
@@ -59,10 +63,11 @@ export function Leaderboard({
       {/* Filter Tabs */}
       <div className="flex flex-wrap gap-2 mb-6 text-[12px] font-medium">
         {[
-          { id: 'all', label: `All Ranked (${spots.length})` },
-          { id: 'outside', label: `Outside Screen (Top 5 - Higher)`, icon: Smartphone },
-          { id: 'inside', label: `Inside Screen (15 Apps - Lower)`, icon: Layers },
-          { id: 'waitlist', label: `Waitlist / Line` },
+          { id: 'all', label: `All Ranks (20)` },
+          { id: 'outside', label: `Outside Screen (Top 5)`, icon: Smartphone },
+          { id: 'inside', label: `Inside Screen (15 Apps)`, icon: Layers },
+          { id: 'claimed', label: `Claimed (${claimedCount})` },
+          { id: 'vacant', label: `Available (${20 - Math.min(20, claimedCount)})` },
         ].map(tab => {
           const Icon = tab.icon;
           return (
@@ -89,21 +94,23 @@ export function Leaderboard({
             <thead className="border-b border-hairline bg-mist/60 text-[11px] font-semibold uppercase tracking-wider text-ink-2">
               <tr>
                 <th className="px-5 py-3.5">Rank</th>
-                <th className="px-5 py-3.5">Brand</th>
+                <th className="px-5 py-3.5">Brand / Status</th>
                 <th className="hidden md:table-cell px-5 py-3.5">Placement</th>
-                <th className="px-5 py-3.5 text-right">Total Bid ({currency})</th>
+                <th className="px-5 py-3.5 text-right">Current / Base Price</th>
                 <th className="px-5 py-3.5 text-right">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-hairline/60">
               {filteredSpots.map((spot) => {
+                const isOccupied = Boolean(spot.brandName);
                 const isOutside = spot.rank <= 5;
                 const isInside = spot.rank > 5 && spot.rank <= 20;
+                const price = isOccupied ? spot.bidAmount : (SPOT_BASE_PRICES[spot.rank] || 20);
 
                 return (
                   <tr
                     key={spot.id || spot.rank}
-                    className="group hover:bg-mist/40 transition-colors"
+                    className={`group transition-colors ${isOccupied ? 'hover:bg-mist/40' : 'bg-mist/10 hover:bg-mist/30'}`}
                   >
                     {/* Rank Number */}
                     <td className="px-5 py-4 font-bold text-ink whitespace-nowrap">
@@ -117,17 +124,21 @@ export function Leaderboard({
                       </div>
                     </td>
 
-                    {/* Brand details */}
+                    {/* Brand details / Vacant status */}
                     <td className="px-5 py-4">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-xs font-bold text-white shadow-xs"
-                          style={{ backgroundColor: spot.logoBg || '#1d1d1f' }}
-                        >
-                          {spot.logoText || spot.brandName?.slice(0, 2) || '✦'}
-                        </div>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-1.5">
+                      {isOccupied ? (
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl overflow-hidden shadow-xs border border-black/10"
+                            style={{ backgroundColor: spot.logoBg || '#1d1d1f' }}
+                          >
+                            {spot.logoUrl ? (
+                              <img src={spot.logoUrl} alt="Logo" className="h-full w-full object-contain p-1" />
+                            ) : (
+                              <span className="text-xs font-bold text-white">{spot.logoText || '★'}</span>
+                            )}
+                          </div>
+                          <div className="min-w-0">
                             <a
                               href={spot.url}
                               target="_blank"
@@ -137,12 +148,22 @@ export function Leaderboard({
                               <span>{spot.brandName}</span>
                               <ExternalLink className="h-3 w-3 text-ink-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </a>
+                            <p className="truncate text-[11px] text-ink-2 max-w-xs sm:max-w-md">
+                              {spot.tagline}
+                            </p>
                           </div>
-                          <p className="truncate text-[11px] text-ink-2 max-w-xs sm:max-w-md">
-                            {spot.tagline}
-                          </p>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-dashed border-hairline bg-mist/50 text-ink-2">
+                            <Plus className="h-4 w-4" />
+                          </div>
+                          <div>
+                            <span className="font-medium text-ink-2 italic">Open Spot #{spot.rank}</span>
+                            <span className="block text-[10px] text-ink-2/80">Available to claim</span>
+                          </div>
+                        </div>
+                      )}
                     </td>
 
                     {/* Placement badge */}
@@ -150,7 +171,7 @@ export function Leaderboard({
                       {isOutside && (
                         <span className="inline-flex items-center gap-1 rounded-full bg-orange-50 px-2.5 py-1 text-[11px] font-semibold text-orange-800 border border-orange-200">
                           <Smartphone className="h-3 w-3 text-orange-600" />
-                          Outside Cover Screen (Top Tier)
+                          Outside Screen (High Tier)
                         </span>
                       )}
                       {isInside && (
@@ -159,16 +180,11 @@ export function Leaderboard({
                           Inside Screen
                         </span>
                       )}
-                      {!isOutside && !isInside && (
-                        <span className="inline-flex items-center rounded-full bg-zinc-100 px-2.5 py-1 text-[11px] font-medium text-zinc-600 border border-zinc-200">
-                          Waitlist (Next in Line)
-                        </span>
-                      )}
                     </td>
 
-                    {/* Total Bid Amount */}
+                    {/* Price */}
                     <td className="px-5 py-4 text-right font-semibold tabular-nums text-emerald-600 whitespace-nowrap">
-                      {formatPrice(spot.bidAmount, currency)}
+                      {formatPrice(price, currency)}
                     </td>
 
                     {/* Action */}
@@ -176,9 +192,13 @@ export function Leaderboard({
                       <button
                         type="button"
                         onClick={() => { playClick(); onClaimSpot(spot); }}
-                        className="rounded-full border border-hairline bg-white px-3 py-1.5 text-xs font-semibold text-ink hover:border-ink hover:bg-ink hover:text-white transition-all shadow-2xs"
+                        className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-all shadow-2xs ${
+                          isOccupied
+                            ? 'border border-hairline bg-white text-ink hover:border-ink hover:bg-ink hover:text-white'
+                            : 'bg-orange-600 text-white hover:bg-orange-700 font-bold'
+                        }`}
                       >
-                        Outbid #{spot.rank}
+                        {isOccupied ? `Outbid #${spot.rank}` : `Claim #${spot.rank}`}
                       </button>
                     </td>
                   </tr>
