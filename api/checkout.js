@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 
     const apiKey = process.env.DODO_PAYMENTS_API_KEY;
     const mode = process.env.DODO_PAYMENTS_MODE || (apiKey?.startsWith('test_') ? 'test_mode' : 'live_mode');
-    const productId = process.env.DODO_PRODUCT_ID || 'pdt_0NnMDvs4DmKQ0QN5rReBn';
+    const productId = process.env.DODO_PRODUCT_ID || 'pdt_0NnO5oC305a42RPnKWtls';
 
     // If real Dodo Payments API key is provided, create real checkout session
     if (apiKey) {

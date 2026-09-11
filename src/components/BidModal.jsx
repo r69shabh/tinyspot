@@ -5,8 +5,8 @@ import { formatPrice, usdToInr, inrToUsd } from '../utils/currency';
 import { playClick } from '../utils/audio';
 import { SPOT_BASE_PRICES } from '../data/initialBoard';
 
-const DODO_API_KEY = '0sBurbjtawrdLcLg.Q9oitL5QLFBaz4AnTfcZnccjANGl6Cj0iCGIG-T2wLUTA6vF';
-const DODO_PRODUCT_ID = 'pdt_0NnMDvs4DmKQ0QN5rReBn';
+const DODO_API_KEY = 'VuHu0EoaUUgLzxl8.6vHnpw_yaIbf6ntsoRzz61zQAW7rcKNLfGbqbCcRWv_7ZVuG';
+const DODO_PRODUCT_ID = 'pdt_0NnO5oC305a42RPnKWtls';
 
 export function BidModal({
   isOpen,
@@ -143,7 +143,7 @@ export function BidModal({
 
     try {
       let checkoutUrl = null;
-      let checkoutMode = 'test';
+      let checkoutMode = 'live';
 
       try {
         const res = await fetch('/api/checkout', {
@@ -169,9 +169,9 @@ export function BidModal({
         console.warn('Backend checkout call failed, trying direct fallback:', apiErr);
       }
 
-      // Direct client-side Dodo Payments fallback
+      // Direct client-side Dodo Payments fallback (Live)
       if (!checkoutUrl) {
-        const directRes = await fetch('https://test.dodopayments.com/checkouts', {
+        const directRes = await fetch('https://live.dodopayments.com/checkouts', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${DODO_API_KEY}`,
