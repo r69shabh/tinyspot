@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, ArrowRight, ShieldCheck, Upload, Image as ImageIcon, Sparkles } from 'lucide-react';
+import { DodoPayments } from 'dodopayments-checkout';
 import { formatPrice, usdToInr, inrToUsd } from '../utils/currency';
 import { playClick } from '../utils/audio';
 import { SPOT_BASE_PRICES } from '../data/initialBoard';
@@ -142,6 +143,8 @@ export function BidModal({
 
     try {
       let checkoutUrl = null;
+      let checkoutMode = 'test';
+
       try {
         const res = await fetch('/api/checkout', {
           method: 'POST',
@@ -151,13 +154,22 @@ export function BidModal({
             returnUrl: `${window.location.origin}/?success=true&rank=${selectedRank}`,
           }),
         });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.checkout_url) checkoutUrl = data.checkout_url;
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.checkout_url) {
+          checkoutUrl = data.checkout_url;
+          if (data.mode) checkoutMode = data.mode;
+        } else if (data.isUnauthorizedLive) {
+          setErrorMsg('Live Mode requires a Live API key from your Dodo dashboard (app.dodopayments.com).');
+          setIsProcessing(false);
+          return;
+        } else if (data.error) {
+          setErrorMsg(data.error);
         }
-      } catch (apiErr) {}
+      } catch (apiErr) {
+        console.warn('Backend checkout call failed, trying direct fallback:', apiErr);
+      }
 
-      // Direct client-side Dodo Payments API fallback
+      // Direct client-side Dodo Payments fallback
       if (!checkoutUrl) {
         const directRes = await fetch('https://test.dodopayments.com/checkouts', {
           method: 'POST',
@@ -174,6 +186,11 @@ export function BidModal({
               },
             ],
             return_url: `${window.location.origin}/?success=true&rank=${selectedRank}`,
+            customization: {
+              show_order_details: false,
+              theme: 'system',
+            },
+            minimal_address: true,
             metadata: {
               rank: String(selectedRank),
               brandName: cleanBidData.brandName,
@@ -191,8 +208,37 @@ export function BidModal({
       }
 
       if (checkoutUrl) {
-        window.location.href = checkoutUrl;
-        return;
+        // Guarantee mobile overlay format (/overlay/session/...)
+        const overlayUrl = checkoutUrl.includes('/overlay/')
+          ? checkoutUrl
+          : checkoutUrl.replace('/session/', '/overlay/session/');
+
+        try {
+          // Initialize official Dodo Payments responsive overlay
+          DodoPayments.Initialize({
+            mode: checkoutMode === 'live' ? 'live' : 'test',
+            displayType: 'overlay',
+            onEvent: (event) => {
+              if (event.event_type === 'checkout.closed') {
+                setIsProcessing(false);
+                setStatusMessage('');
+              }
+            },
+          });
+
+          // Open responsive in-app bottom sheet / modal
+          DodoPayments.Checkout.open({
+            checkoutUrl: overlayUrl,
+          });
+
+          setIsProcessing(false);
+          return;
+        } catch (sdkErr) {
+          console.warn('Dodo overlay SDK fallback to mobile URL navigation:', sdkErr);
+          // Direct navigation to mobile-optimized overlay page
+          window.location.href = overlayUrl;
+          return;
+        }
       }
 
       // Offline / Local save fallback

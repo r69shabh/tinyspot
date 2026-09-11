@@ -30,9 +30,10 @@ export async function onRequestPost(context) {
       });
     }
 
+    const requestedMode = (body?.mode || env?.DODO_PAYMENTS_MODE || '').toLowerCase();
     const apiKey = env?.DODO_PAYMENTS_API_KEY || '0sBurbjtawrdLcLg.Q9oitL5QLFBaz4AnTfcZnccjANGl6Cj0iCGIG-T2wLUTA6vF';
     const productId = env?.DODO_PRODUCT_ID || 'pdt_0NnMDvs4DmKQ0QN5rReBn';
-    const isLive = env?.DODO_PAYMENTS_MODE === 'live';
+    const isLive = requestedMode === 'live' || apiKey.startsWith('live_');
     const endpoint = isLive
       ? 'https://live.dodopayments.com/checkouts'
       : 'https://test.dodopayments.com/checkouts';
@@ -51,6 +52,11 @@ export async function onRequestPost(context) {
         },
       ],
       return_url: finalReturnUrl,
+      customization: {
+        show_order_details: false,
+        theme: 'system',
+      },
+      minimal_address: true,
       metadata: {
         rank: String(rank),
         brandName: String(resolvedBrand),
@@ -76,9 +82,15 @@ export async function onRequestPost(context) {
 
     if (!dodoRes.ok) {
       console.error('Dodo Payments API error:', dodoData);
+      const isUnauthorizedLive = isLive && dodoRes.status === 401;
+      const errorMsg = isUnauthorizedLive
+        ? 'Dodo Payments Live Mode requires a Live API Key. Switch to Live Mode in app.dodopayments.com and add DODO_PAYMENTS_API_KEY.'
+        : (dodoData.message || dodoData.error || 'Failed to create Dodo Payments checkout');
+
       return new Response(JSON.stringify({
-        error: dodoData.message || dodoData.error || 'Failed to create Dodo Payments checkout',
+        error: errorMsg,
         details: dodoData,
+        isUnauthorizedLive,
       }), {
         status: dodoRes.status,
         headers: corsHeaders,
@@ -107,9 +119,16 @@ export async function onRequestPost(context) {
       }
     }
 
+    // Build mobile-responsive overlay URL (/overlay/session/...)
+    const rawUrl = dodoData.checkout_url || '';
+    const overlayUrl = rawUrl.includes('/overlay/')
+      ? rawUrl
+      : rawUrl.replace('/session/', '/overlay/session/');
+
     return new Response(JSON.stringify({
       success: true,
-      checkout_url: dodoData.checkout_url,
+      checkout_url: overlayUrl || rawUrl,
+      raw_checkout_url: rawUrl,
       session_id: dodoData.session_id,
       mode: isLive ? 'live' : 'test',
     }), {

@@ -13,6 +13,7 @@
     "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",
     "dodopayments": "^2.50.0",
+    "dodopayments-checkout": "^1.9.9",
     "lucide-react": "^1.16.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

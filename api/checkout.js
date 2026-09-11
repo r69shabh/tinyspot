@@ -49,6 +49,11 @@ export default async function handler(req, res) {
           },
         ],
         return_url: returnUrl || 'https://tinyspot.lol',
+        customization: {
+          show_order_details: false,
+          theme: 'system',
+        },
+        minimal_address: true,
         metadata: {
           rank: String(rank),
           brandName: String(brandName || ''),
@@ -57,9 +62,15 @@ export default async function handler(req, res) {
         },
       });
 
+      const rawUrl = session.checkout_url || '';
+      const overlayUrl = rawUrl.includes('/overlay/')
+        ? rawUrl
+        : rawUrl.replace('/session/', '/overlay/session/');
+
       return res.status(200).json({
         success: true,
-        checkout_url: session.checkout_url,
+        checkout_url: overlayUrl || rawUrl,
+        raw_checkout_url: rawUrl,
         session_id: session.session_id,
         mode,
       });

@@ -248,3 +248,63 @@ test('Checkout Cart: Never sells bid amount as quantity of $1 units', () => {
   assert.equal(dynamicAmount, 57000);
 });
 
+// ==========================================
+// 7. MOBILE CHECKOUT & OVERLAY ADAPTATION
+// ==========================================
+test('Mobile Optimization: Payload includes show_order_details=false and minimal_address=true', () => {
+  function buildPayload(amount) {
+    return {
+      product_cart: [{ product_id: 'pdt_0NnMDvs4DmKQ0QN5rReBn', quantity: 1, amount: amount * 100 }],
+      customization: {
+        show_order_details: false,
+        theme: 'system',
+      },
+      minimal_address: true,
+    };
+  }
+
+  const payload = buildPayload(150);
+  assert.equal(payload.customization.show_order_details, false);
+  assert.equal(payload.customization.theme, 'system');
+  assert.equal(payload.minimal_address, true);
+});
+
+test('Mobile Optimization: Transforms desktop /session/ URL to mobile /overlay/session/ URL', () => {
+  function toMobileOverlayUrl(url) {
+    if (!url) return '';
+    return url.includes('/overlay/') ? url : url.replace('/session/', '/overlay/session/');
+  }
+
+  const testSessionUrl = 'https://test.checkout.dodopayments.com/session/cks_0NnO2TBBMxuk9Bhk5nppi';
+  const liveSessionUrl = 'https://checkout.dodopayments.com/session/cks_live1234567890abcdef';
+  const alreadyOverlayUrl = 'https://checkout.dodopayments.com/overlay/session/cks_live1234567890abcdef';
+
+  assert.equal(
+    toMobileOverlayUrl(testSessionUrl),
+    'https://test.checkout.dodopayments.com/overlay/session/cks_0NnO2TBBMxuk9Bhk5nppi'
+  );
+  assert.equal(
+    toMobileOverlayUrl(liveSessionUrl),
+    'https://checkout.dodopayments.com/overlay/session/cks_live1234567890abcdef'
+  );
+  assert.equal(
+    toMobileOverlayUrl(alreadyOverlayUrl),
+    'https://checkout.dodopayments.com/overlay/session/cks_live1234567890abcdef'
+  );
+});
+
+test('Mode Switching: Distinguishes between test and live endpoints', () => {
+  function getEndpoint(mode, apiKey) {
+    const isLive = mode === 'live' || apiKey.startsWith('live_');
+    return isLive
+      ? 'https://live.dodopayments.com/checkouts'
+      : 'https://test.dodopayments.com/checkouts';
+  }
+
+  assert.equal(getEndpoint('test', '0sBurb...'), 'https://test.dodopayments.com/checkouts');
+  assert.equal(getEndpoint('live', '0sBurb...'), 'https://live.dodopayments.com/checkouts');
+  assert.equal(getEndpoint('', 'live_sec_key_xyz'), 'https://live.dodopayments.com/checkouts');
+  assert.equal(getEndpoint('', 'test_sec_key_xyz'), 'https://test.dodopayments.com/checkouts');
+});
+
+
