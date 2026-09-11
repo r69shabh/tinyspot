@@ -23,7 +23,7 @@ export function OutsideScreen({
           {/* Authentic pristine CAD render */}
           <img
             src="/phone-outside-clean.png"
-            alt="Apple iPhone Fold Flat (Back and Outside Cover Screen)"
+            alt="Apple iPhone Duo Flat (Back and Outside Cover Screen)"
             className="block h-auto w-full pointer-events-none"
           />
 
@@ -127,7 +127,7 @@ export function OutsideScreen({
       <div className="relative overflow-hidden rounded-[38px] drop-shadow-2xl">
         <img
           src="/phone-cover-clean.png"
-          alt="Apple iPhone Fold Cover Screen"
+          alt="Apple iPhone Duo Cover Screen"
           className="block h-auto w-full pointer-events-none"
         />
 

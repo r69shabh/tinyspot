@@ -1,6 +1,6 @@
 import React from 'react';
 import { SpotElement } from './SpotElement';
-import { Wifi, Battery } from 'lucide-react';
+import { Wifi, Battery, Plus } from 'lucide-react';
 import { SPOT_BASE_PRICES } from '../data/initialBoard';
 
 export function InsideScreen({
@@ -36,11 +36,11 @@ export function InsideScreen({
 
   return (
     <div className="relative mx-auto w-full max-w-[680px] sm:max-w-[760px] select-none">
-      {/* Pristine authentic CAD render of unfolded iPhone Fold */}
+      {/* Pristine authentic CAD render of unfolded iPhone Duo */}
       <div className="relative overflow-hidden rounded-[38px] drop-shadow-2xl">
         <img
           src="/phone-inside-clean.png"
-          alt="Apple iPhone Fold Unfolded Inside Screen"
+          alt="Apple iPhone Duo Unfolded Inside Screen"
           className="block h-auto w-full pointer-events-none"
         />
 

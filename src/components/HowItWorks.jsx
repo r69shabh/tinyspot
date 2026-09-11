@@ -17,9 +17,9 @@ export function HowItWorks() {
     },
     {
       num: '3',
-      title: '15 spots on the folding canvas',
+      title: '15 spots on the dual folding canvas',
       icon: Layers,
-      desc: 'Ranks #6–#20 secure spots ($20–$160) across the 7.6-inch unfolded inner OLED screen. 8 spots live on the left panel and 7 spots live on the right panel.',
+      desc: 'Ranks #6–#20 secure spots ($20–$180) across the 7.6-inch unfolded inner OLED screen. 8 spots live on the left panel and 7 spots live on the right panel.',
     },
     {
       num: '4',
@@ -39,7 +39,7 @@ export function HowItWorks() {
           How it works
         </h2>
         <p className="mt-2 text-[15px] text-ink-2 max-w-xl mx-auto">
-          Rent digital real estate on the first Apple iPhone Fold on <strong className="text-ink">tinyspot.lol</strong>.
+          Rent digital real estate on the first Apple iPhone Duo on <strong className="text-ink">tinyspot.lol</strong>.
         </p>
       </div>
 

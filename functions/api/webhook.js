@@ -81,7 +81,7 @@ export async function onRequestPost(context) {
       if (cleanUrl && !/^https?:\/\//i.test(cleanUrl)) {
         cleanUrl = `https://${cleanUrl}`;
       }
-      const cleanTagline = String(tagline || '').trim() || 'Official sponsor on iPhone Fold';
+      const cleanTagline = String(tagline || '').trim() || 'Official sponsor on iPhone Duo';
       const screen = rank <= 5 ? 'outside' : 'inside';
       const amountINR = Math.round(amountUSD * 83.3055);
 

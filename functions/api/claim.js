@@ -42,7 +42,7 @@ export async function onRequestPost(context) {
 
     const cleanBrand = String(brandName || '').trim() || 'Anonymous Sponsor';
     const cleanUrl = String(url || '').trim().startsWith('http') ? String(url).trim() : `https://${String(url || '').trim()}`;
-    const cleanTagline = String(tagline || '').trim() || 'Official sponsor on iPhone Fold';
+    const cleanTagline = String(tagline || '').trim() || 'Official sponsor on iPhone Duo';
     const screen = targetRank <= 5 ? 'outside' : 'inside';
     const amountINR = Math.round(amountUSD * 83.3055);
 

@@ -85,7 +85,7 @@ export function Header({
       <div className="flex flex-wrap items-center justify-center gap-2">
         <p className="inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1 text-xs font-semibold text-orange-950 shadow-2xs">
           <span className="inline-block h-2 w-2 rounded-full bg-orange-500 animate-pulse" />
-          <span>India's 1st iPhone Fold Crowdfund</span>
+          <span>India's 1st iPhone Duo Crowdfund</span>
           <span className="text-orange-400">·</span>
           <span className="font-bold text-orange-900">$3,600 Target</span>
         </p>
@@ -102,12 +102,12 @@ export function Header({
 
       {/* Main Headline */}
       <h1 className="mt-4 text-[clamp(2.2rem,5.5vw,4.2rem)] font-bold leading-[1.04] tracking-[-0.04em] text-ink">
-        Put your brand on Apple's first iPhone Fold.
+        Put your brand on Apple's first iPhone Duo.
       </h1>
 
       {/* Description */}
       <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-ink-2 sm:text-[17px]">
-        An outbid auction for 20 permanent spots on the first folding iPhone in India. The <span className="font-semibold text-ink">top 5 command the outside cover screen</span> ($290–$780). Ranks <span className="font-semibold text-ink">6–20 take the dual folding screen inside</span> ($20–$160).
+        An outbid auction for 20 permanent spots on the first folding iPhone Duo in India. The <span className="font-semibold text-ink">top 5 command the outside cover screen</span> ($290–$780). Ranks <span className="font-semibold text-ink">6–20 take the dual folding screen inside</span> ($20–$180).
       </p>
 
       {/* Goal & Funding Progress Box */}
@@ -138,7 +138,7 @@ export function Header({
 
         {/* Progress details footer */}
         <div className="mt-2.5 flex items-center justify-between text-[11px] text-ink-2">
-          <span>Target: iPhone Fold India Price (₹2,99,900 ≈ $3,600)</span>
+          <span>Target: iPhone Duo India Price (₹2,99,900 ≈ $3,600)</span>
           <span className="font-medium text-ink">
             {totalRaisedUSD >= TARGET_PRICE_USD ? 'Goal reached! 🎉' : `${formatPrice(TARGET_PRICE_USD - totalRaisedUSD, currency)} remaining`}
           </span>

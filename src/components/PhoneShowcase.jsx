@@ -163,7 +163,7 @@ export function PhoneShowcase({
                   <Layers className="h-3.5 w-3.5 text-indigo-600" />
                   Inside Screen (Ranks 6–20)
                 </span>
-                <p className="text-[11px] text-ink-2">15 spots ($20–$160) across dual folding canvas</p>
+                <p className="text-[11px] text-ink-2">15 spots ($20–$180) across dual folding canvas</p>
               </div>
               <InsideScreen
                 spots={spots}
@@ -209,7 +209,7 @@ export function PhoneShowcase({
           }}
           className="group flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-orange-600 px-7 py-3.5 text-[15px] font-bold text-white shadow-lg transition-all duration-200 hover:bg-orange-700 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
         >
-          <span>Claim a Spot on the Fold</span>
+          <span>Claim a Spot on iPhone Duo</span>
           <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </button>
         <a

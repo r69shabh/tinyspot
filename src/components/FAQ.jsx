@@ -10,10 +10,10 @@ export function FAQ() {
       id: 'hardware',
       icon: Smartphone,
       category: 'The Hardware',
-      q: 'Where and how will this iPhone Fold actually be seen?',
+      q: 'Where and how will this iPhone Duo actually be seen?',
       summary: 'Daily in-person presence across Delhi NCR & Bangalore, plus viral social demos.',
       detail:
-        'The iPhone Fold will serve as Rishabh’s primary, daily-driven phone in India. It will be actively used at founder meetups, coffee shops, coworking spaces, tech conferences, and airport lounges. Every public fold/unfold interaction turns your logo into the focal point. In addition, video demos, device unboxings, and screen recordings will be shared regularly on X/Twitter and YouTube, creating recurring online impressions.',
+        'The iPhone Duo will serve as Rishabh’s primary, daily-driven phone in India. It will be actively used at founder meetups, coffee shops, coworking spaces, tech conferences, and airport lounges. Every public fold/unfold interaction turns your logo into the focal point. In addition, video demos, device unboxings, and screen recordings will be shared regularly on X/Twitter and YouTube, creating recurring online impressions.',
     },
     {
       id: 'outbid',

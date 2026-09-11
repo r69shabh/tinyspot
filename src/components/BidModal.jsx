@@ -125,7 +125,7 @@ export function BidModal({
       rank: selectedRank,
       brandName: brandName.trim(),
       url: url.trim().startsWith('http') ? url.trim() : `https://${url.trim()}`,
-      tagline: `${brandName.trim()} on iPhone Fold`,
+      tagline: `${brandName.trim()} on iPhone Duo`,
       bidAmountUSD: Number(bidAmountUSD),
       logoBg: '#18181b',
       logoText: brandName.trim().slice(0, 2).toUpperCase() || '★',
@@ -237,10 +237,10 @@ export function BidModal({
             </span>
           </div>
           <h3 className="mt-2 text-xl font-bold tracking-tight text-ink">
-            Claim Spot #{selectedRank} on the Fold
+            Claim Spot #{selectedRank} on iPhone Duo
           </h3>
           <p className="mt-1 text-[13px] text-ink-2">
-            Put your brand on the first Apple iPhone Fold. Goes live immediately upon payment.
+            Put your brand on Apple's first iPhone Duo. Goes live immediately upon payment.
           </p>
         </div>
 

@@ -26,7 +26,7 @@ export function Footer({
               </h3>
 
               <p className="mt-3 text-[14px] leading-relaxed text-ink-2">
-                Apple’s first foldable phone is the most anticipated piece of mobile hardware in a decade. When it arrives in India, it will be the center of attention in every tech hub, conference, coworking space, and coffee shop.
+                Apple’s first foldable phone, the <strong className="text-ink font-semibold">iPhone Duo</strong>, is the most anticipated piece of mobile hardware in a decade. When it arrives in India, it will be the center of attention in every tech hub, conference, coworking space, and coffee shop.
               </p>
 
               <p className="mt-2.5 text-[14px] leading-relaxed text-ink-2">
@@ -102,7 +102,7 @@ export function Footer({
               <dl className="space-y-3 text-xs">
                 <div className="flex justify-between items-center py-1 border-b border-hairline/40">
                   <dt className="text-ink-2">Hardware Target</dt>
-                  <dd className="font-semibold text-ink">Apple iPhone Fold (256GB)</dd>
+                  <dd className="font-semibold text-ink">Apple iPhone Duo (256GB)</dd>
                 </div>
                 <div className="flex justify-between items-center py-1 border-b border-hairline/40">
                   <dt className="text-ink-2">India Retail Price</dt>

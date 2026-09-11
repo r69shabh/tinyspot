@@ -1,5 +1,5 @@
 export const TARGET_PRICE_USD = 3600; // $3,600 USD
-export const TARGET_PRICE_INR = 299900; // ₹2,99,900 INR (Apple iPhone Fold India launch price)
+export const TARGET_PRICE_INR = 299900; // ₹2,99,900 INR (Apple iPhone Duo India launch price)
 export const MIN_OUTBID_STEP_USD = 5; // $5 min outbid gap
 export const MIN_OUTBID_STEP_INR = 500; // ₹500 min outbid gap
 
