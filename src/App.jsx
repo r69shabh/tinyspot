@@ -8,6 +8,8 @@ import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
 import { BidModal } from './components/BidModal';
 import { INITIAL_SPONSORS, INITIAL_ACTIVITY } from './data/initialBoard';
+import confetti from 'canvas-confetti';
+import { playSuccessChime } from './utils/audio';
 
 const STORAGE_KEY_SPOTS = 'tinyspot_sponsors_v2';
 const STORAGE_KEY_ACTIVITY = 'tinyspot_activity_v2';
@@ -59,6 +61,27 @@ export function App() {
       localStorage.setItem(STORAGE_KEY_CURRENCY, currency);
     } catch (e) {}
   }, [currency]);
+
+  // Handle return redirect from Dodo Payments checkout
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('success') === 'true') {
+        try {
+          const pendingRaw = sessionStorage.getItem('tinyspot_pending_bid');
+          if (pendingRaw) {
+            const pending = JSON.parse(pendingRaw);
+            sessionStorage.removeItem('tinyspot_pending_bid');
+            handleConfirmBid(pending);
+            playSuccessChime();
+            confetti({ particleCount: 100, spread: 80, origin: { y: 0.5 } });
+          }
+        } catch (e) {}
+        // Clean URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
+  }, []);
 
   // Calculate total amount raised in USD
   const totalRaisedUSD = spots.reduce((sum, s) => sum + (s.bidAmount || 0), 0);
