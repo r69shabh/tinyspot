@@ -8,31 +8,31 @@ export function FAQ() {
   const faqs = [
     {
       q: 'Is tinyspot.lol real?',
-      a: 'The board is real, the ranking is public, and Dodo Payments processes checkout. You paste your website, customize your brand icon, and pay to take a rank. The top 20 sit directly on the iPhone Fold.',
+      a: 'Yes. The board is real, the rankings are public, and Dodo Payments handles checkout. When you claim a spot, your brand goes live instantly on the interactive phone showcase and public leaderboard.',
     },
     {
       q: 'Why the iPhone Fold?',
-      a: 'It is the most anticipated Apple hardware in a decade. With a 5.4-inch outer cover screen and a 7.6-inch unfolded inner canvas, it is a viral novelty. People stare at it in public, at coworking spaces, and in meetings — making it the most visible billboard possible.',
+      a: 'Apple’s first foldable smartphone is the biggest hardware conversation of the year. With a cover screen on the outside and a large unfolding canvas inside, it commands attention in meetings, coworking spaces, and in transit — turning into a unique physical and digital billboard.',
     },
     {
-      q: 'How is the math divided between Outside and Inside screens?',
-      a: 'The goal is $3,600 (₹2,99,900, the official India launch price of the 256GB iPhone Fold). The Outside Screen holds the premier Top 5 spots ($290 to $780) totaling $2,420 (~67% of the total goal) because the closed cover screen gets maximum daily visibility. The Inside Screen holds 15 spots ($20 to $160) totaling $1,180 (~33% of the goal) spread across the unfolded dual panels.',
+      q: 'How are spots and prices structured?',
+      a: 'Our target is $3,600 USD (₹2,99,900 INR, the official India launch price). The high-glance Outside Screen holds the Top 5 spots ($290 to $780). The unfolding Inside Screen holds 15 spots ($20 to $160). You can claim any open spot at its starting base price, or outbid any sponsor by +$5 (+₹500).',
     },
     {
-      q: 'How does Dodo Payments work here?',
-      a: 'Dodo Payments acts as the Merchant of Record (MoR), handling global tax compliance, fraud prevention, and payments via Credit Cards, Apple Pay, Google Pay, and UPI. All charges are in whole dollars with automatic rupee conversion.',
+      q: 'How does Dodo Payments checkout work?',
+      a: 'Dodo Payments serves as the Merchant of Record, providing secure global checkout. Sponsors can pay using Credit Cards, Apple Pay, Google Pay, or Indian UPI.',
     },
     {
-      q: 'What do I actually get as a sponsor?',
-      a: 'A verified public rank on the leaderboard, a direct clickable link to your site, and — if you are in the top 20 — your logo sitting on the iPhone Fold home screens (Top 5 on outside cover screen, Ranks 6–20 on inside screen).',
+      q: 'What happens if another sponsor outbids my rank?',
+      a: 'When another sponsor outbids you by +$5 (+₹500), your spot gracefully moves down by one rank. You can reclaim your position at any time by bidding the difference.',
     },
     {
-      q: 'What if someone takes my spot?',
-      a: 'They have to bid at least $5 (₹500) more than you. You simply slide down by one rank. Climbing back only costs the difference between what you previously paid and the new bid.',
+      q: 'What types of brands and projects can participate?',
+      a: 'SaaS products, indie apps, developer tools, startups, newsletters, and creators are all welcome. We keep the showcase clean, respectful, and family-friendly.',
     },
     {
-      q: 'Can any brand or indie maker join?',
-      a: 'Yes! SaaS tools, indie hackers, developer utilities, and creators are all welcome. We keep the board clean, family-friendly, and high quality.',
+      q: 'How can I reach out for questions or support?',
+      a: 'You can email Rishabh directly at connect@r69shabh.me for any questions, sponsorship verifications, or feedback.',
     }
   ];
 

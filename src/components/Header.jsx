@@ -65,13 +65,13 @@ export function Header({
       </p>
 
       {/* Main Headline */}
-      <h1 className="mt-4 text-[clamp(2.2rem,5.5vw,4.2rem)] font-semibold leading-[1.04] tracking-[-0.05em] text-ink">
-        Your brand, on my iPhone Fold.
+      <h1 className="mt-4 text-[clamp(2.2rem,5.5vw,4.2rem)] font-bold leading-[1.04] tracking-[-0.04em] text-ink">
+        Put your brand on Apple's first iPhone Fold.
       </h1>
 
       {/* Description */}
       <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-ink-2 sm:text-[17px]">
-        Pay to rank. The <span className="font-semibold text-ink">top 5 sit on the outside screen</span> ($290–$780). Ranks <span className="font-semibold text-ink">6–20 sit on the inside screen</span> ($20–$160).
+        An outbid auction for 20 permanent spots on the first folding iPhone in India. The <span className="font-semibold text-ink">top 5 command the outside cover screen</span> ($290–$780). Ranks <span className="font-semibold text-ink">6–20 take the dual folding screen inside</span> ($20–$160).
       </p>
 
       {/* Goal & Funding Progress Box */}

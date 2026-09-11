@@ -5,27 +5,27 @@ export function HowItWorks() {
   const steps = [
     {
       num: '1',
-      title: 'Pay to rank on Dodo',
+      title: 'Pick your spot & set your bid',
       icon: ShieldCheck,
-      desc: 'Pay any whole-dollar amount through Dodo Payments (Cards, Apple Pay, Google Pay, UPI). Higher total ranks higher. Each rank must be at least $5 (₹500) above the next. If you bid again, you only pay the difference.',
+      desc: 'Claim any vacant spot starting from its base price, or outbid an existing sponsor by +$5 (₹500). Secure checkout powered by Dodo Payments with Cards, Apple Pay, Google Pay, and UPI.',
     },
     {
       num: '2',
-      title: 'Top five on outside screen',
+      title: 'Top 5 on the cover display',
       icon: Smartphone,
-      desc: 'Ranks #1–#5 hold the high-value premier spots ($290–$780) on the closed cover screen. This is the display everyone stares at when the phone is in hand or resting on a table. #1 holds the billboard widget card.',
+      desc: 'Ranks #1–#5 command the high-frequency front screen ($290–$780). This is the display seen whenever the device is in hand or resting on a table. #1 earns the prominent hero billboard widget.',
     },
     {
       num: '3',
-      title: '15 spots on inside screen',
+      title: '15 spots on the folding canvas',
       icon: Layers,
-      desc: 'Ranks #6–#20 hold the accessible spots ($20–$160) across the 7.6-inch unfolded inner canvas. 8 app icons on the left panel and 7 app icons on the right panel. Your spot shifts the second payment confirms.',
+      desc: 'Ranks #6–#20 secure spots ($20–$160) across the 7.6-inch unfolded inner OLED screen. 8 spots live on the left panel and 7 spots live on the right panel.',
     },
     {
       num: '4',
-      title: 'Everyone is ranked',
+      title: 'Real-time public leaderboard',
       icon: TrendingUp,
-      desc: 'The list is every bidder, from #1 down. Beat #20 by $5 to break onto the phone. Beat #5 to break onto the cover display. Clicking any logo directs traffic straight to your website.',
+      desc: 'Your brand goes live on the phone render the second payment confirms. If someone outbids your spot, you naturally shift down by one rank. Clicking any logo directs traffic straight to your site.',
     },
   ];
 
@@ -33,13 +33,13 @@ export function HowItWorks() {
     <section id="how" className="mx-auto max-w-5xl px-6 py-14 border-t border-hairline/70">
       <div className="mb-10 text-center">
         <span className="text-[12px] font-semibold uppercase tracking-wider text-ink-2">
-          Simple Outbid Rules
+          Transparent Auction Rules
         </span>
         <h2 className="text-3xl font-semibold tracking-tight text-ink mt-1">
           How it works
         </h2>
         <p className="mt-2 text-[15px] text-ink-2 max-w-xl mx-auto">
-          Rent the dual screens of the first Apple iPhone Fold on <strong className="text-ink">tinyspot.lol</strong>. Payments handled by Dodo Payments.
+          Rent digital real estate on the first Apple iPhone Fold on <strong className="text-ink">tinyspot.lol</strong>.
         </p>
       </div>
 

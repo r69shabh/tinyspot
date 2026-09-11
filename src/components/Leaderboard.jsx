@@ -61,11 +61,11 @@ export function Leaderboard({
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex flex-wrap gap-2 mb-6 text-[12px] font-medium">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 mb-6 text-xs sm:text-[12px] font-medium no-scrollbar">
         {[
           { id: 'all', label: `All Ranks (20)` },
-          { id: 'outside', label: `Outside Screen (Top 5)`, icon: Smartphone },
-          { id: 'inside', label: `Inside Screen (15 Apps)`, icon: Layers },
+          { id: 'outside', label: `Outside (Top 5)`, icon: Smartphone },
+          { id: 'inside', label: `Inside (15 Apps)`, icon: Layers },
           { id: 'claimed', label: `Claimed (${claimedCount})` },
           { id: 'vacant', label: `Available (${20 - Math.min(20, claimedCount)})` },
         ].map(tab => {
@@ -74,7 +74,7 @@ export function Leaderboard({
             <button
               key={tab.id}
               onClick={() => { playClick(); setFilter(tab.id); }}
-              className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 border transition-all ${
+              className={`shrink-0 flex items-center gap-1.5 rounded-full px-3 py-1.5 border transition-all cursor-pointer ${
                 filter === tab.id
                   ? 'bg-ink text-white border-ink font-semibold shadow-xs'
                   : 'bg-white text-ink-2 border-hairline/80 hover:bg-mist'
