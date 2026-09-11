@@ -107,8 +107,21 @@ export function Header({
 
       {/* Description */}
       <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-ink-2 sm:text-[17px]">
-        An outbid auction for 20 permanent spots on the first folding iPhone Duo in India. The <span className="font-semibold text-ink">top 5 command the outside cover screen</span> ($290–$780). Ranks <span className="font-semibold text-ink">6–20 take the dual folding screen inside</span> ($20–$180).
+        An outbid auction for 20 permanent spots on the first folding iPhone Duo in India. The <span className="font-semibold text-ink">top 5 command the outside cover screen</span> ($50–$150). Ranks <span className="font-semibold text-ink">6–20 take the dual folding screen inside</span> ($10–$35).
       </p>
+
+      {/* Real-world Visibility Badges */}
+      <div className="mx-auto mt-4 flex flex-wrap items-center justify-center gap-2 text-[11px] font-medium text-ink-2">
+        <span className="inline-flex items-center gap-1 rounded-full border border-hairline/80 bg-white/90 px-3 py-1 shadow-2xs">
+          🎓 <strong className="text-ink font-semibold">2,500+ Student Tech Campus</strong>
+        </span>
+        <span className="inline-flex items-center gap-1 rounded-full border border-hairline/80 bg-white/90 px-3 py-1 shadow-2xs">
+          🏢 <strong className="text-ink font-semibold">Gurgaon Cyber City & Golf Course Rd</strong>
+        </span>
+        <span className="inline-flex items-center gap-1 rounded-full border border-hairline/80 bg-white/90 px-3 py-1 shadow-2xs">
+          🍸 <strong className="text-ink font-semibold">Delhi Tech Circles & Elite Founders</strong>
+        </span>
+      </div>
 
       {/* Goal & Funding Progress Box */}
       <div className="mx-auto mt-8 max-w-md rounded-2xl border border-hairline/80 bg-mist/60 p-5 text-left backdrop-blur-sm shadow-xs">

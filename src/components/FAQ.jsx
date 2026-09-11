@@ -11,18 +11,18 @@ export function FAQ() {
       icon: Smartphone,
       category: 'The Hardware',
       q: 'Where and how will this iPhone Duo actually be seen?',
-      summary: 'Daily in-person presence across Delhi NCR & Bangalore, plus viral social demos.',
+      summary: 'Daily in-person presence across a 2,500+ student tech campus, Gurgaon Cyber City, and Delhi tech/high-society circles.',
       detail:
-        'The iPhone Duo will serve as Rishabh’s primary, daily-driven phone in India. It will be actively used at founder meetups, coffee shops, coworking spaces, tech conferences, and airport lounges. Every public fold/unfold interaction turns your logo into the focal point. In addition, video demos, device unboxings, and screen recordings will be shared regularly on X/Twitter and YouTube, creating recurring online impressions.',
+        'The iPhone Duo will serve as Rishabh’s primary daily driver in India with intense real-world exposure: (1) Daily campus presence at a premier tech university with 2,500+ engineering and CS students, developers, and future founders. (2) Frequent presence in Gurgaon’s DLF Cyber City, One Horizon Center, and Golf Course Road tech hubs. (3) Active participation in Delhi’s high-society tech circles, private founder dinners, luxury coworking spaces (WeWork, Innov8), and third-wave cafes (Blue Tokai, Third Wave). (4) Every time the device is unfolded in public, tech bros, founders, and students naturally ask to inspect it—turning your brand into an instant conversation starter. Plus, recurring viral video demos, device unboxings, and screen recordings on X/Twitter and YouTube.',
     },
     {
       id: 'outbid',
       icon: Zap,
       category: 'Auction Mechanics',
       q: 'How does outbidding work, and what if someone takes my slot?',
-      summary: 'Outbid by +$5 (+₹500). Outbid sponsors gracefully shift down—never deleted.',
+      summary: 'Starting from $10–$25 inside ($50 cover). Outbid by +$5 (+₹500) and sponsors gracefully shift down.',
       detail:
-        'Any open spot can be claimed at its starting base price. If another sponsor wishes to take your specific rank, they must outbid you by at least $5 USD (₹500 INR). When that happens, you are not kicked off the board—your sponsor slot moves down to the next rank. You retain full link and logo presence, and you can reclaim your top position at any time by simply paying the difference.',
+        'Any open spot can be claimed starting from accessible base floors ($10–$35 for inside canvas spots; $50–$150 for outside cover spots). If another sponsor wishes to take your specific rank, they must outbid you by at least $5 USD (₹500 INR). When that happens, you are not kicked off the board—your sponsor slot moves down to the next rank. You retain full link and logo presence, and you can reclaim your top position at any time by simply paying the difference.',
     },
     {
       id: 'perks',

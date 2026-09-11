@@ -1,6 +1,7 @@
 import React from 'react';
 import { SpotElement } from './SpotElement';
 import { Wifi, Battery } from 'lucide-react';
+import { SPOT_BASE_PRICES } from '../data/initialBoard';
 
 export function OutsideScreen({
   spots = [],
@@ -9,11 +10,11 @@ export function OutsideScreen({
   onClaim,
   showFullDevice = true,
 }) {
-  const spot1 = spots.find(s => s.rank === 1) || { rank: 1, id: 'spot-1', bidAmount: 780 };
-  const spot2 = spots.find(s => s.rank === 2) || { rank: 2, id: 'spot-2', bidAmount: 570 };
-  const spot3 = spots.find(s => s.rank === 3) || { rank: 3, id: 'spot-3', bidAmount: 430 };
-  const spot4 = spots.find(s => s.rank === 4) || { rank: 4, id: 'spot-4', bidAmount: 350 };
-  const spot5 = spots.find(s => s.rank === 5) || { rank: 5, id: 'spot-5', bidAmount: 290 };
+  const spot1 = spots.find(s => s.rank === 1) || { rank: 1, id: 'spot-1', bidAmount: SPOT_BASE_PRICES[1] || 150 };
+  const spot2 = spots.find(s => s.rank === 2) || { rank: 2, id: 'spot-2', bidAmount: SPOT_BASE_PRICES[2] || 110 };
+  const spot3 = spots.find(s => s.rank === 3) || { rank: 3, id: 'spot-3', bidAmount: SPOT_BASE_PRICES[3] || 85 };
+  const spot4 = spots.find(s => s.rank === 4) || { rank: 4, id: 'spot-4', bidAmount: SPOT_BASE_PRICES[4] || 65 };
+  const spot5 = spots.find(s => s.rank === 5) || { rank: 5, id: 'spot-5', bidAmount: SPOT_BASE_PRICES[5] || 50 };
 
   // If showing full device (ceramic back on left + cover screen on right)
   if (showFullDevice) {
@@ -62,7 +63,7 @@ export function OutsideScreen({
                 <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[8px] font-semibold uppercase tracking-wider text-white/80 border border-white/10">
                   Outside Screen · Top 5
                 </span>
-                <span className="text-[8px] text-emerald-400 font-medium">$290–$780</span>
+                <span className="text-[8px] text-emerald-400 font-medium">$50–$150</span>
               </div>
 
               {/* Rank 1: Hero Billboard */}
@@ -164,7 +165,7 @@ export function OutsideScreen({
               <span className="rounded-full bg-white/10 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-wider text-white/80 border border-white/10">
                 Outside Screen · Top 5
               </span>
-              <span className="text-[9px] text-emerald-400 font-medium">$290–$780</span>
+              <span className="text-[9px] text-emerald-400 font-medium">$50–$150</span>
             </div>
 
             <div className="h-[34%]">

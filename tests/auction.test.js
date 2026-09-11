@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { formatUSD, formatINR, formatPrice, usdToInr, inrToUsd, INR_PER_USD } from '../src/utils/currency.js';
-import { SPOT_BASE_PRICES } from '../src/data/initialBoard.js';
+import { SPOT_BASE_PRICES, TARGET_PRICE_USD, TARGET_PRICE_INR } from '../src/data/initialBoard.js';
 
 // ==========================================
 // 1. MATHEMATICAL PRICING SPECS
@@ -13,7 +13,7 @@ test('Pricing Specs: 20 total spots defined', () => {
   }
 });
 
-test('Pricing Specs: Outside Screen (Top 5) sums to exactly $2,420 USD (~67%)', () => {
+test('Pricing Specs: Outside Screen (Top 5) starts between $50 and $150', () => {
   const outsidePrices = [
     SPOT_BASE_PRICES[1],
     SPOT_BASE_PRICES[2],
@@ -21,27 +21,24 @@ test('Pricing Specs: Outside Screen (Top 5) sums to exactly $2,420 USD (~67%)', 
     SPOT_BASE_PRICES[4],
     SPOT_BASE_PRICES[5],
   ];
-  assert.deepEqual(outsidePrices, [780, 570, 430, 350, 290]);
-  const sumOutside = outsidePrices.reduce((a, b) => a + b, 0);
-  assert.equal(sumOutside, 2420);
+  assert.deepEqual(outsidePrices, [150, 110, 85, 65, 50]);
+  assert.equal(SPOT_BASE_PRICES[1], 150);
+  assert.equal(SPOT_BASE_PRICES[5], 50);
 });
 
-test('Pricing Specs: Inside Screen (Ranks 6–20) sums to exactly $1,180 USD (~33%)', () => {
-  let sumInside = 0;
+test('Pricing Specs: Inside Screen (Ranks 6–20) accessible floors span $10 to $35', () => {
+  assert.equal(SPOT_BASE_PRICES[6], 35);
+  assert.equal(SPOT_BASE_PRICES[20], 10);
   for (let r = 6; r <= 20; r++) {
-    sumInside += SPOT_BASE_PRICES[r];
+    assert.ok(SPOT_BASE_PRICES[r] >= 10 && SPOT_BASE_PRICES[r] <= 35);
   }
-  assert.equal(sumInside, 1180);
 });
 
-test('Pricing Specs: Grand total sums to exactly $3,600 USD (₹2,99,900 INR)', () => {
-  let totalUSD = 0;
-  for (let r = 1; r <= 20; r++) {
-    totalUSD += SPOT_BASE_PRICES[r];
-  }
-  assert.equal(totalUSD, 3600);
-  const totalINR = Math.round(totalUSD * INR_PER_USD);
-  assert.equal(totalINR, 299900);
+test('Pricing Specs: Hardware crowdfunding target remains exactly $3,600 USD (₹2,99,900 INR)', () => {
+  assert.equal(TARGET_PRICE_USD, 3600);
+  assert.equal(TARGET_PRICE_INR, 299900);
+  const calculatedINR = Math.round(TARGET_PRICE_USD * INR_PER_USD);
+  assert.equal(calculatedINR, 299900);
 });
 
 // ==========================================
@@ -107,11 +104,13 @@ test('Validation: Bid amount checking against base prices', () => {
     return { valid: true };
   }
 
-  assert.equal(validateBid(1, 780).valid, true);
-  assert.equal(validateBid(1, 1000).valid, true);
-  assert.equal(validateBid(1, 779).valid, false); // below $780
-  assert.equal(validateBid(20, 20).valid, true);
-  assert.equal(validateBid(20, 15).valid, false); // below $20
+  assert.equal(validateBid(1, 150).valid, true);
+  assert.equal(validateBid(1, 200).valid, true);
+  assert.equal(validateBid(1, 149).valid, false); // below $150
+  assert.equal(validateBid(20, 10).valid, true);
+  assert.equal(validateBid(20, 9).valid, false); // below $10
+  assert.equal(validateBid(5, 50).valid, true);
+  assert.equal(validateBid(5, 49).valid, false); // below $50
   assert.equal(validateBid(5, -10).valid, false);
   assert.equal(validateBid(5, 0).valid, false);
 });

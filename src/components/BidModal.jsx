@@ -19,7 +19,7 @@ export function BidModal({
   const [brandName, setBrandName] = useState('');
   const [url, setUrl] = useState('');
   const [logoUrl, setLogoUrl] = useState('');
-  const [bidAmountUSD, setBidAmountUSD] = useState(780);
+  const [bidAmountUSD, setBidAmountUSD] = useState(150);
   const [inputCurrency, setInputCurrency] = useState(currency || 'USD');
   const [isProcessing, setIsProcessing] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');

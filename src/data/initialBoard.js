@@ -3,30 +3,30 @@ export const TARGET_PRICE_INR = 299900; // ₹2,99,900 INR (Apple iPhone Duo Ind
 export const MIN_OUTBID_STEP_USD = 5; // $5 min outbid gap
 export const MIN_OUTBID_STEP_INR = 500; // ₹500 min outbid gap
 
-// Exact base prices for vacant spots (sums to $3,600 / ₹2,99,900):
-// Outside Cover Screen (Top 5 higher price): $780, $570, $430, $350, $290 = $2,420 (~67%)
-// Inside Unfolded Screen (15 spots lower price): $180, $155, $135, $115, $100, $85, $75, $65, $55, $50, $45, $40, $35, $30, $20 = $1,180 (~33%)
+// Accessible starting base prices:
+// Outside Cover Screen (Top 5 spots): $150, $110, $85, $65, $50 ($50–$150)
+// Inside Unfolded Screen (15 spots): $35, $30, $25, $22, $20, $18, $16, $15, $14, $12, $12, $10, $10, $10, $10 ($10–$35)
 export const SPOT_BASE_PRICES = {
-  1: 780,
-  2: 570,
-  3: 430,
-  4: 350,
-  5: 290,
-  6: 180,
-  7: 155,
-  8: 135,
-  9: 115,
-  10: 100,
-  11: 85,
-  12: 75,
-  13: 65,
-  14: 55,
-  15: 50,
-  16: 45,
-  17: 40,
-  18: 35,
-  19: 25,
-  20: 20,
+  1: 150,
+  2: 110,
+  3: 85,
+  4: 65,
+  5: 50,
+  6: 35,
+  7: 30,
+  8: 25,
+  9: 22,
+  10: 20,
+  11: 18,
+  12: 16,
+  13: 15,
+  14: 14,
+  15: 12,
+  16: 12,
+  17: 10,
+  18: 10,
+  19: 10,
+  20: 10,
 };
 
 // Pure scratch initial state: 0 demo brands, all 20 spots vacant

@@ -145,7 +145,7 @@ export function PhoneShowcase({
                   <Smartphone className="h-3.5 w-3.5 text-emerald-600" />
                   Outside Screen (Top 5)
                 </span>
-                <p className="text-[11px] text-ink-2">High price tier ($290–$780) · Maximum daily glanceability</p>
+                <p className="text-[11px] text-ink-2">Prime cover tier ($50–$150) · Maximum daily glanceability</p>
               </div>
               <OutsideScreen
                 spots={spots}
@@ -163,7 +163,7 @@ export function PhoneShowcase({
                   <Layers className="h-3.5 w-3.5 text-indigo-600" />
                   Inside Screen (Ranks 6–20)
                 </span>
-                <p className="text-[11px] text-ink-2">15 spots ($20–$180) across dual folding canvas</p>
+                <p className="text-[11px] text-ink-2">15 spots ($10–$35) across dual folding canvas</p>
               </div>
               <InsideScreen
                 spots={spots}

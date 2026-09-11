@@ -26,11 +26,11 @@ export function Footer({
               </h3>
 
               <p className="mt-3 text-[14px] leading-relaxed text-ink-2">
-                Apple’s first foldable phone, the <strong className="text-ink font-semibold">iPhone Duo</strong>, is the most anticipated piece of mobile hardware in a decade. When it arrives in India, it will be the center of attention in every tech hub, conference, coworking space, and coffee shop.
+                Apple’s first foldable phone, the <strong className="text-ink font-semibold">iPhone Duo</strong>, is the most anticipated piece of mobile hardware in a decade. As Rishabh's primary daily driver, this device will receive continuous real-world exposure across a premier tech university campus of <strong className="text-ink font-semibold">2,500+ engineering and CS students</strong>, as well as the bustling corridors of <strong className="text-ink font-semibold">Gurgaon Cyber City</strong>, One Horizon, Golf Course Road, and Delhi’s elite tech and high-society circles.
               </p>
 
               <p className="mt-2.5 text-[14px] leading-relaxed text-ink-2">
-                Rather than letting the screens sit empty with generic wallpapers, <strong className="text-ink font-semibold">tinyspot</strong> turns the device into an interactive physical billboard. 20 permanent slots are dedicated to showcasing world-class SaaS products, developer utilities, indie tools, and creators.
+                From hackathons, startup meetups, and founder coffee runs (Third Wave, Blue Tokai) to private networking dinners with high-net-worth founders, tech bros, and VCs—having India’s first Apple foldable in hand turns every fold and unfold into an instant focal point. Rather than letting the screens sit empty with generic wallpapers, <strong className="text-ink font-semibold">tinyspot</strong> gives 20 ambitious brands an unmissable physical billboard.
               </p>
             </div>
 
@@ -110,11 +110,15 @@ export function Footer({
                 </div>
                 <div className="flex justify-between items-center py-1 border-b border-hairline/40">
                   <dt className="text-ink-2">Outside Cover Slots</dt>
-                  <dd className="font-semibold text-ink">Top 5 Spots ($290–$780)</dd>
+                  <dd className="font-semibold text-ink">Top 5 Spots ($50–$150)</dd>
                 </div>
                 <div className="flex justify-between items-center py-1 border-b border-hairline/40">
                   <dt className="text-ink-2">Inside Canvas Slots</dt>
-                  <dd className="font-semibold text-ink">15 Spots ($20–$160)</dd>
+                  <dd className="font-semibold text-ink">15 Spots ($10–$35)</dd>
+                </div>
+                <div className="flex justify-between items-center py-1 border-b border-hairline/40">
+                  <dt className="text-ink-2">Daily Live Audience</dt>
+                  <dd className="font-semibold text-ink">2,500+ Tech Students · Gurgaon & Delhi Tech Hubs</dd>
                 </div>
                 <div className="flex justify-between items-center py-1 border-b border-hairline/40">
                   <dt className="text-ink-2">Merchant of Record</dt>

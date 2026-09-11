@@ -13,13 +13,13 @@ export function HowItWorks() {
       num: '2',
       title: 'Top 5 on the cover display',
       icon: Smartphone,
-      desc: 'Ranks #1–#5 command the high-frequency front screen ($290–$780). This is the display seen whenever the device is in hand or resting on a table. #1 earns the prominent hero billboard widget.',
+      desc: 'Ranks #1–#5 command the high-frequency front screen ($50–$150). This is the display seen whenever the device is in hand or resting on a table. #1 earns the prominent hero billboard widget.',
     },
     {
       num: '3',
       title: '15 spots on the dual folding canvas',
       icon: Layers,
-      desc: 'Ranks #6–#20 secure spots ($20–$180) across the 7.6-inch unfolded inner OLED screen. 8 spots live on the left panel and 7 spots live on the right panel.',
+      desc: 'Ranks #6–#20 secure spots ($10–$35) across the 7.6-inch unfolded inner OLED screen. 8 spots live on the left panel and 7 spots live on the right panel.',
     },
     {
       num: '4',
