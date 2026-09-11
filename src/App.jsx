@@ -79,17 +79,61 @@ export function App() {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       if (params.get('success') === 'true') {
-        try {
-          const pendingRaw = sessionStorage.getItem('tinyspot_pending_bid');
-          if (pendingRaw) {
-            const pending = JSON.parse(pendingRaw);
-            sessionStorage.removeItem('tinyspot_pending_bid');
-            handleConfirmBid(pending);
-            playSuccessChime();
-            confetti({ particleCount: 100, spread: 80, origin: { y: 0.5 } });
+        const processReturn = async () => {
+          let bidToConfirm = null;
+
+          // 1. Try sessionStorage
+          try {
+            const pendingRaw = sessionStorage.getItem('tinyspot_pending_bid');
+            if (pendingRaw) {
+              bidToConfirm = JSON.parse(pendingRaw);
+              sessionStorage.removeItem('tinyspot_pending_bid');
+            }
+          } catch (e) {}
+
+          // 2. Fallback: try session_id lookup via API
+          const sessionId = params.get('session_id') || params.get('sessionId');
+          if (!bidToConfirm && sessionId) {
+            try {
+              const res = await fetch(`/api/checkout-status?session_id=${encodeURIComponent(sessionId)}`);
+              if (res.ok) {
+                const data = await res.json();
+                if (data.session) {
+                  bidToConfirm = {
+                    rank: data.session.rank,
+                    brandName: data.session.brand_name,
+                    url: data.session.url,
+                    tagline: data.session.tagline,
+                    bidAmountUSD: data.session.bid_amount_usd,
+                    logoBg: data.session.logo_bg,
+                    logoText: data.session.logo_text,
+                    logoUrl: data.session.logo_url,
+                  };
+                }
+              }
+            } catch (apiErr) {}
           }
-        } catch (e) {}
-        window.history.replaceState({}, document.title, window.location.pathname);
+
+          // 3. Fallback: URL params
+          if (!bidToConfirm && params.get('rank')) {
+            bidToConfirm = {
+              rank: Number(params.get('rank')),
+              brandName: decodeURIComponent(params.get('brand') || 'Verified Sponsor'),
+              url: 'https://tinyspot.lol',
+              tagline: 'Official launch sponsor',
+              bidAmountUSD: 20,
+            };
+          }
+
+          if (bidToConfirm) {
+            await handleConfirmBid(bidToConfirm);
+            playSuccessChime();
+            confetti({ particleCount: 120, spread: 90, origin: { y: 0.5 } });
+          }
+          window.history.replaceState({}, document.title, window.location.pathname);
+        };
+
+        processReturn();
       }
     }
   }, []);

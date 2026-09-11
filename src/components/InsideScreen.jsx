@@ -46,7 +46,7 @@ export function InsideScreen({
 
         {/* LEFT DISPLAY PANEL (Ranks #6 to #13) - Pixel-aligned to hardware bezels */}
         <div
-          className="absolute overflow-hidden flex flex-col justify-between p-2 sm:p-3"
+          className="absolute overflow-hidden flex flex-col justify-between pl-2 sm:pl-3 pr-3 sm:pr-4 pt-2 sm:pt-2.5 pb-1.5 sm:pb-2"
           style={{
             left: '30.65%',
             top: '6.74%',
@@ -64,12 +64,12 @@ export function InsideScreen({
           {/* Left panel header */}
           <div className="relative z-10 flex items-center justify-between border-b border-white/10 pb-1 text-[8px] sm:text-[9px] font-semibold text-white/90">
             <div className="flex items-center gap-1">
-              <span className="tabular-nums font-semibold">9:41</span>
-              <span className="hidden xs:inline rounded-full bg-white/10 px-1 py-0.2 text-[7px] text-white/70">
-                Left
+              <span className="tabular-nums font-semibold text-white">9:41</span>
+              <span className="rounded bg-white/15 px-1 py-0.2 text-[7px] text-white/80 font-bold">
+                Left Canvas
               </span>
             </div>
-            <span className="text-[8px] text-emerald-400 font-medium">#6–#13 · $55–$160</span>
+            <span className="text-[8px] sm:text-[8.5px] text-emerald-300 font-bold">#6–#13</span>
           </div>
 
           {/* Left Panel Grid: 8 Spots */}
@@ -87,12 +87,12 @@ export function InsideScreen({
           </div>
 
           {/* Left bottom bar */}
-          <div className="relative z-10 mx-auto h-0.5 w-12 rounded-full bg-white/20" />
+          <div className="relative z-10 mx-auto h-0.5 w-12 rounded-full bg-white/30" />
         </div>
 
         {/* RIGHT DISPLAY PANEL (Ranks #14 to #20) - Pixel-aligned to hardware bezels */}
         <div
-          className="absolute overflow-hidden flex flex-col justify-between p-2 sm:p-3"
+          className="absolute overflow-hidden flex flex-col justify-between pl-3 sm:pl-4 pr-2 sm:pr-3 pt-2 sm:pt-2.5 pb-1.5 sm:pb-2"
           style={{
             left: '60.94%',
             top: '7.45%',
@@ -109,15 +109,15 @@ export function InsideScreen({
 
           {/* Right panel header */}
           <div className="relative z-10 flex items-center justify-between border-b border-white/10 pb-1 text-[8px] sm:text-[9px] font-semibold text-white/90">
-            <span className="text-[8px] text-emerald-400 font-medium">#14–#20 · $20–$50</span>
+            <span className="text-[8px] sm:text-[8.5px] text-emerald-300 font-bold">#14–#20</span>
             <div className="flex items-center gap-1">
-              <span className="text-[8px] text-white/70">5G</span>
-              <Wifi className="h-2 w-2" />
-              <Battery className="h-2 w-2" />
+              <span className="text-[7.5px] sm:text-[8px] text-white/80 font-bold">5G</span>
+              <Wifi className="h-2 w-2 text-white/80" />
+              <Battery className="h-2 w-2 text-white/80" />
             </div>
           </div>
 
-          {/* Right Panel Grid: 7 Spots + 1 Vacant Slot */}
+          {/* Right Panel Grid: 7 Spots + 1 Backer Slot */}
           <div className="relative z-10 grid grid-cols-2 gap-1 sm:gap-1.5 flex-1 items-center py-1">
             {rightSpots.map(spot => (
               <SpotElement
@@ -129,22 +129,24 @@ export function InsideScreen({
                 variant="icon"
               />
             ))}
-            {/* Vacant / Add Spot Indicator */}
-            <div className="flex flex-col items-center justify-center p-0.5 text-center">
-              <button
-                type="button"
-                onClick={() => onClaim?.({ rank: 20 })}
-                className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-[22%] border border-dashed border-white/30 bg-white/5 text-white/50 hover:border-white hover:text-white transition-all text-xs"
-                title="Claim Vacant Spot #20"
-              >
-                +
-              </button>
-              <span className="mt-0.5 text-[7px] font-medium text-white/40">Vacant</span>
-            </div>
+            {/* 8th Balanced Symmetrical Slot: Open Sponsor Spot */}
+            <button
+              type="button"
+              onClick={() => onClaim?.({ rank: 20 })}
+              className="group relative flex flex-col items-center justify-center text-center p-0.5 cursor-pointer w-full"
+              title="Claim an open inner screen spot"
+            >
+              <div className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-[22%] border border-dashed border-emerald-400/40 bg-emerald-500/10 text-emerald-300 transition-all duration-200 group-hover:scale-105 group-hover:border-emerald-300 group-hover:bg-emerald-500/25">
+                <Plus className="h-3 w-3 text-emerald-300" />
+              </div>
+              <span className="mt-0.5 block w-full truncate text-[7.5px] sm:text-[8px] font-bold text-emerald-300 leading-none">
+                + Open Spot
+              </span>
+            </button>
           </div>
 
           {/* Right bottom bar */}
-          <div className="relative z-10 mx-auto h-0.5 w-12 rounded-full bg-white/20" />
+          <div className="relative z-10 mx-auto h-0.5 w-12 rounded-full bg-white/30" />
         </div>
 
         {/* Realistic center hinge reflection seam */}
