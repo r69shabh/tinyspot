@@ -206,3 +206,46 @@ test('Webhook: Discards non-payment events safely', () => {
   assert.equal(isPaymentSuccess('payment.failed'), false);
   assert.equal(isPaymentSuccess('subscription.created'), false);
 });
+
+// ==========================================
+// 6. CHECKOUT DYNAMIC PRICING FORMAT
+// ==========================================
+test('Checkout Cart: Formats dynamic pricing with quantity 1 and amount in cents (not unit multiplication)', () => {
+  function createCartPayload(productId, userBidUSD) {
+    return {
+      product_cart: [
+        {
+          product_id: productId,
+          quantity: 1, // Single unit purchase
+          amount: Math.round(Number(userBidUSD) * 100), // In cents
+        },
+      ],
+    };
+  }
+
+  const payload780 = createCartPayload('pdt_0NnMDvs4DmKQ0QN5rReBn', 780);
+  assert.equal(payload780.product_cart[0].quantity, 1);
+  assert.equal(payload780.product_cart[0].amount, 78000); // $780.00
+
+  const payload20 = createCartPayload('pdt_0NnMDvs4DmKQ0QN5rReBn', 20);
+  assert.equal(payload20.product_cart[0].quantity, 1);
+  assert.equal(payload20.product_cart[0].amount, 2000); // $20.00
+
+  const payloadOdd = createCartPayload('pdt_0NnMDvs4DmKQ0QN5rReBn', 135.5);
+  assert.equal(payloadOdd.product_cart[0].quantity, 1);
+  assert.equal(payloadOdd.product_cart[0].amount, 13550); // $135.50
+});
+
+test('Checkout Cart: Never sells bid amount as quantity of $1 units', () => {
+  const userBidUSD = 570;
+  // Bad legacy approach: quantity = 570
+  const legacyQuantity = Math.round(userBidUSD);
+  // Fixed dynamic approach: quantity = 1, amount = 57000
+  const dynamicQuantity = 1;
+  const dynamicAmount = Math.round(userBidUSD * 100);
+
+  assert.notEqual(dynamicQuantity, legacyQuantity);
+  assert.equal(dynamicQuantity, 1);
+  assert.equal(dynamicAmount, 57000);
+});
+

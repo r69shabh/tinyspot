@@ -31,7 +31,7 @@ export async function onRequestPost(context) {
     }
 
     const apiKey = env?.DODO_PAYMENTS_API_KEY || '0sBurbjtawrdLcLg.Q9oitL5QLFBaz4AnTfcZnccjANGl6Cj0iCGIG-T2wLUTA6vF';
-    const productId = env?.DODO_PRODUCT_ID || 'pdt_0Nm5UYjiECVXnZNzh0a2X';
+    const productId = env?.DODO_PRODUCT_ID || 'pdt_0NnMDvs4DmKQ0QN5rReBn';
     const isLive = env?.DODO_PAYMENTS_MODE === 'live';
     const endpoint = isLive
       ? 'https://live.dodopayments.com/checkouts'
@@ -40,12 +40,14 @@ export async function onRequestPost(context) {
     const origin = new URL(request.url).origin;
     const finalReturnUrl = returnUrl || `${origin}/?success=true&rank=${rank}&brand=${encodeURIComponent(resolvedBrand)}`;
 
-    // Product 'pdt_0Nm5UYjiECVXnZNzh0a2X' unit price is $1.00 USD, quantity = amount
+    // Product 'pdt_0NnMDvs4DmKQ0QN5rReBn' (Tinyspot) dynamic pricing: amount in cents, quantity = 1
+    const amountInCents = Math.round(amount * 100);
     const dodoPayload = {
       product_cart: [
         {
           product_id: productId,
-          quantity: Math.max(1, Math.round(amount)),
+          quantity: 1,
+          amount: amountInCents,
         },
       ],
       return_url: finalReturnUrl,
@@ -54,6 +56,10 @@ export async function onRequestPost(context) {
         brandName: String(resolvedBrand),
         url: String(url || ''),
         tagline: String(tagline || ''),
+        amountUSD: String(amount),
+        logoBg: String(logoBg || '#1d1d1f'),
+        logoText: String(logoText || String(resolvedBrand).slice(0, 2)),
+        logoUrl: String(logoUrl || ''),
       },
     };
 

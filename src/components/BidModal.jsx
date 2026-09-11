@@ -5,7 +5,7 @@ import { playClick } from '../utils/audio';
 import { SPOT_BASE_PRICES } from '../data/initialBoard';
 
 const DODO_API_KEY = '0sBurbjtawrdLcLg.Q9oitL5QLFBaz4AnTfcZnccjANGl6Cj0iCGIG-T2wLUTA6vF';
-const DODO_PRODUCT_ID = 'pdt_0Nm5UYjiECVXnZNzh0a2X';
+const DODO_PRODUCT_ID = 'pdt_0NnMDvs4DmKQ0QN5rReBn';
 
 export function BidModal({
   isOpen,
@@ -169,7 +169,8 @@ export function BidModal({
             product_cart: [
               {
                 product_id: DODO_PRODUCT_ID,
-                quantity: Math.max(1, Math.round(Number(bidAmountUSD))),
+                quantity: 1,
+                amount: Math.round(Number(bidAmountUSD) * 100),
               },
             ],
             return_url: `${window.location.origin}/?success=true&rank=${selectedRank}`,
@@ -177,6 +178,8 @@ export function BidModal({
               rank: String(selectedRank),
               brandName: cleanBidData.brandName,
               url: cleanBidData.url,
+              tagline: cleanBidData.tagline,
+              amountUSD: String(cleanBidData.bidAmountUSD),
             },
           }),
         });
